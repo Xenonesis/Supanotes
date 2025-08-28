@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Persistence Test</title>
+</head>
+<body>
+    <h1>Authentication Persistence Test</h1>
+    <p>This page can be used to test if authentication persists after refresh.</p>
+    
+    <h2>Test Steps:</h2>
+    <ol>
+        <li>Sign in to the application</li>
+        <li>Verify you can see the dashboard</li>
+        <li>Refresh the page (F5 or Ctrl+R)</li>
+        <li>Check if you remain signed in</li>
+    </ol>
+    
+    <h2>What was fixed:</h2>
+    <ul>
+        <li><strong>Session Persistence:</strong> Modified AuthContext to better preserve sessions on page refresh</li>
+        <li><strong>Clock Skew Tolerance:</strong> Increased tolerance for minor time differences to prevent unnecessary logouts</li>
+        <li><strong>Token Refresh Handling:</strong> Added proper handling for TOKEN_REFRESHED events</li>
+        <li><strong>Startup Cleanup:</strong> Made auth cleanup less aggressive on app startup</li>
+        <li><strong>Loading State:</strong> Added extra initialization time to ensure auth state loads properly</li>
+        <li><strong>OAuth State Management:</strong> Better handling of OAuth flow states to prevent conflicts</li>
+    </ul>
+    
+    <h2>Debug Info:</h2>
+    <p>Check the browser console for auth state change logs when refreshing.</p>
+    
+    <script>
+        // Simple script to show localStorage auth data for debugging
+        function showAuthInfo() {
+            const authKeys = Object.keys(localStorage).filter(key => key.includes('supabase'));
+            console.log('Current auth keys in localStorage:', authKeys);
+            authKeys.forEach(key => {
+                try {
+                    const value = JSON.parse(localStorage.getItem(key) || '{}');
+                    console.log(key, value);
+                } catch (e) {
+                    console.log(key, localStorage.getItem(key));
+                }
+            });
+        }
+        
+        // Show auth info on page load
+        showAuthInfo();
+        
+        // Add button to manually check auth info
+        const button = document.createElement('button');
+        button.textContent = 'Show Current Auth Info in Console';
+        button.onclick = showAuthInfo;
+        document.body.appendChild(button);
+    </script>
+</body>
+</html>

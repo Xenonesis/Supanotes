@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
-import { Trash2, Clock, Image, Mic, FileText, Download } from 'lucide-react'
+import { Trash2, Clock, Image, Mic, FileText, Download, Eye, MoreVertical } from 'lucide-react'
 import { Note } from '../../lib/supabase'
+import { formatDate, formatFileSize } from '../../lib/utils'
 
 interface NoteCardProps {
   note: Note
@@ -10,23 +11,8 @@ interface NoteCardProps {
 }
 
 export const NoteCard: React.FC<NoteCardProps> = ({ note, onDelete }) => {
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-  }
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
+  const [showActions, setShowActions] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const getContentTypeIcon = () => {
     switch (note.content_type) {

@@ -1,59 +1,102 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
+import { ThemeProvider, useTheme } from './contexts/ThemeContext'
 import { AuthPage } from './components/Auth/AuthPage'
-import { BasicDashboard } from './components/Dashboard/BasicDashboard'
+import { EnhancedBasicDashboard } from './components/Dashboard/EnhancedBasicDashboard'
 import { LoadingSpinner } from './components/LoadingSpinner'
+
+import { OAuthHandler } from './components/OAuthHandler'
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth()
+  const { isDark } = useTheme()
+  const [initializing, setInitializing] = useState(true)
 
-  if (loading) {
-    return <LoadingSpinner />
+  // Give extra time for auth initialization on page refresh
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setInitializing(false)
+    }, 1000) // Wait 1 second for auth to initialize properly
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Check if we're handling an OAuth redirect
+  const urlParams = new URLSearchParams(window.location.search)
+  if (urlParams.get('access_token') || urlParams.get('code')) {
+    return <OAuthHandler />
+  }
+
+  if (loading || initializing) {
+    return <LoadingSpinner fullScreen />
   }
 
   return (
-    <Routes>
-      <Route path="/auth/*" element={!user ? <AuthPage /> : <BasicDashboard />} />
-      <Route path="/*" element={user ? <BasicDashboard /> : <AuthPage />} />
-    </Routes>
+    <div className="min-h-screen gradient-bg">
+      <Routes>
+        <Route path="/auth/*" element={!user ? <AuthPage /> : <EnhancedBasicDashboard />} />
+        <Route path="/*" element={user ? <EnhancedBasicDashboard /> : <AuthPage />} />
+      </Routes>
+      
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: isDark ? '#1f2937' : '#ffffff',
+            color: isDark ? '#f9fafb' : '#111827',
+            border: isDark ? '1px solid #374151' : '1px solid #e5e7eb',
+            borderRadius: '12px',
+            boxShadow: isDark 
+              ? '0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3)'
+              : '0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+          },
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: '#22c55e',
+              secondary: isDark ? '#1f2937' : '#ffffff',
+            },
+          },
+          error: {
+            duration: 4000,
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: isDark ? '#1f2937' : '#ffffff',
+            },
+          },
+          loading: {
+            iconTheme: {
+              primary: '#3b82f6',
+              secondary: isDark ? '#1f2937' : '#ffffff',
+            },
+          },
+        }}
+      />
+    </div>
   )
 }
 
 function App() {
+  // Only clear OAuth flow flags, never touch auth tokens on startup
+  useEffect(() => {
+    // Always just clear OAuth flow flag - let Supabase handle all token management
+    sessionStorage.removeItem('oauth-flow-active');
+    console.log('🔄 App started - cleared OAuth flow flag only')
+  }, [])
+
   return (
-    <AuthProvider>
-      <Router>
-        <div className="App">
-          <AppContent />
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: '#363636',
-                color: '#fff',
-              },
-              success: {
-                duration: 3000,
-                iconTheme: {
-                  primary: '#4ade80',
-                  secondary: '#fff',
-                },
-              },
-              error: {
-                duration: 4000,
-                iconTheme: {
-                  primary: '#ef4444',
-                  secondary: '#fff',
-                },
-              },
-            }}
-          />
-        </div>
-      </Router>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <div className="App">
+            <AppContent />
+          </div>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 
