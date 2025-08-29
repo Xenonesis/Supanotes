@@ -3,8 +3,8 @@ import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import { Card, CardContent } from '../ui/Card'
 import { 
-  Plus, PenTool, Image, Mic, FileText, X, Tag, Star, 
-  Eye, Upload, Paperclip, Type, Hash
+  Plus, PenTool, Mic, FileText, X, Tag, Star, 
+  Eye, Paperclip, Type, Hash
 } from 'lucide-react'
 import { NoteContentType } from '../../lib/supabase'
 import { CreateNoteData } from '../../hooks/useEnhancedNotes'
@@ -228,7 +228,7 @@ export const EnhancedNoteForm: React.FC<EnhancedNoteFormProps> = ({
   }
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50">
+    <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-soft animate-fade-in-up">
       <CardContent className="p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Header Controls */}

@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { User, AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { handleSupabaseError, validateSystemTime } from '../lib/utils'
-import { setOAuthFlowActive } from '../lib/oauthUtils'
 import toast from 'react-hot-toast'
 
 interface AuthContextType {
@@ -12,6 +11,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
   supabaseReady: boolean
+  supabase: typeof supabase
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -248,6 +248,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signInWithGoogle,
     signOut,
     supabaseReady,
+    supabase,
   }
 
   return (

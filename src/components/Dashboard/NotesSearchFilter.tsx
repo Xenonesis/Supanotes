@@ -4,7 +4,7 @@ import { Input } from '../ui/Input'
 import { Card, CardContent } from '../ui/Card'
 import { 
   Search, Filter, X, Hash, Star, FileText, Image, Mic, 
-  Paperclip, SortDesc, SortAsc, Calendar, Tag
+  Paperclip, Tag
 } from 'lucide-react'
 import { NoteContentType } from '../../lib/supabase'
 import { SearchFilters } from '../../hooks/useEnhancedNotes'
@@ -96,7 +96,7 @@ export const NotesSearchFilter: React.FC<NotesSearchFilterProps> = ({
   ]
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50">
+    <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-soft animate-fade-in-up">
       <CardContent className="p-4">
         <div className="space-y-4">
           {/* Search Bar */}

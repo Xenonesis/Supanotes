@@ -148,56 +148,56 @@ export const EnhancedDashboard: React.FC = () => {
             </Card>
           )}
           {/* Welcome Section with Stats */}
-          <div className="text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
+          <div className="text-center lg:text-left animate-fade-in-up">
+            <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-4 animate-pulse-slow">
               <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
               <span>Enhanced Notes Workspace</span>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">My Notes</h2>
-            <p className="text-gray-600 text-lg mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 animate-fade-in-up">My Notes</h2>
+            <p className="text-gray-600 text-lg mb-6 animate-fade-in-up stagger-1">
               Create, organize, and manage your thoughts with text, images, audio, and mixed content
             </p>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
-              <Card className="bg-white/60 backdrop-blur-sm">
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6 animate-fade-in-up stagger-2">
+              <Card className="bg-white/60 backdrop-blur-sm border border-gray-200/50 shadow-soft interactive-lift">
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-blue-600">{stats.totalNotes}</div>
+                  <div className="text-2xl font-bold text-blue-600 transition-all duration-300 hover:scale-110">{stats.totalNotes}</div>
                   <div className="text-xs text-gray-600">Total Notes</div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-white/60 backdrop-blur-sm">
+              <Card className="bg-white/60 backdrop-blur-sm border border-gray-200/50 shadow-soft interactive-lift">
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-yellow-600">{stats.favoriteNotes}</div>
+                  <div className="text-2xl font-bold text-yellow-600 transition-all duration-300 hover:scale-110">{stats.favoriteNotes}</div>
                   <div className="text-xs text-gray-600">Favorites</div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-white/60 backdrop-blur-sm">
+              <Card className="bg-white/60 backdrop-blur-sm border border-gray-200/50 shadow-soft interactive-lift">
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-gray-600">{stats.textNotes}</div>
+                  <div className="text-2xl font-bold text-gray-600 transition-all duration-300 hover:scale-110">{stats.textNotes}</div>
                   <div className="text-xs text-gray-600">Text</div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-white/60 backdrop-blur-sm">
+              <Card className="bg-white/60 backdrop-blur-sm border border-gray-200/50 shadow-soft interactive-lift">
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-blue-600">{stats.imageNotes}</div>
+                  <div className="text-2xl font-bold text-blue-600 transition-all duration-300 hover:scale-110">{stats.imageNotes}</div>
                   <div className="text-xs text-gray-600">Images</div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-white/60 backdrop-blur-sm">
+              <Card className="bg-white/60 backdrop-blur-sm border border-gray-200/50 shadow-soft interactive-lift">
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-green-600">{stats.audioNotes}</div>
+                  <div className="text-2xl font-bold text-green-600 transition-all duration-300 hover:scale-110">{stats.audioNotes}</div>
                   <div className="text-xs text-gray-600">Audio</div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-white/60 backdrop-blur-sm">
+              <Card className="bg-white/60 backdrop-blur-sm border border-gray-200/50 shadow-soft interactive-lift">
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-purple-600">{stats.mixedNotes}</div>
+                  <div className="text-2xl font-bold text-purple-600 transition-all duration-300 hover:scale-110">{stats.mixedNotes}</div>
                   <div className="text-xs text-gray-600">Mixed</div>
                 </CardContent>
               </Card>
@@ -213,10 +213,10 @@ export const EnhancedDashboard: React.FC = () => {
           />
 
           {/* Quick Add Button */}
-          <div className="flex justify-center">
+          <div className="flex justify-center animate-fade-in-up stagger-3">
             <Button
               onClick={() => setShowForm(!showForm)}
-              className="bg-blue-600 hover:bg-blue-700 shadow-lg px-8 py-3"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg px-8 py-3 interactive-glow"
               size="lg"
             >
               <Plus className="h-5 w-5 mr-2" />
@@ -241,12 +241,12 @@ export const EnhancedDashboard: React.FC = () => {
           )}
 
           {/* Notes Section */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-sm">
+          <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-sm animate-fade-in-up stagger-4">
             <div className="p-6">
               {/* Section Header with Controls */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                  <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
                   <span>Your Notes</span>
                 </h3>
                 
@@ -255,7 +255,7 @@ export const EnhancedDashboard: React.FC = () => {
                   <select
                     value={sortMode}
                     onChange={(e) => setSortMode(e.target.value as SortMode)}
-                    className="px-3 py-1 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="px-3 py-1 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-soft"
                   >
                     <option value="newest">Newest First</option>
                     <option value="oldest">Oldest First</option>
@@ -264,12 +264,12 @@ export const EnhancedDashboard: React.FC = () => {
                   </select>
                   
                   {/* View Mode Toggle */}
-                  <div className="flex border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="flex border border-gray-200 rounded-lg overflow-hidden shadow-soft">
                     <Button
                       variant={viewMode === 'grid' ? 'primary' : 'outline'}
                       size="sm"
                       onClick={() => setViewMode('grid')}
-                      className="rounded-none border-0"
+                      className="rounded-none border-0 interactive-glow"
                     >
                       <Grid className="h-4 w-4" />
                     </Button>
@@ -277,7 +277,7 @@ export const EnhancedDashboard: React.FC = () => {
                       variant={viewMode === 'list' ? 'primary' : 'outline'}
                       size="sm"
                       onClick={() => setViewMode('list')}
-                      className="rounded-none border-0 border-l border-gray-200"
+                      className="rounded-none border-0 border-l border-gray-200 interactive-glow"
                     >
                       <List className="h-4 w-4" />
                     </Button>
@@ -287,9 +287,9 @@ export const EnhancedDashboard: React.FC = () => {
 
               {/* Notes Grid/List */}
               {sortedNotes.length === 0 ? (
-                <div className="text-center py-12">
+                <div className="text-center py-12 animate-fade-in">
                   <div className="text-gray-400 mb-4">
-                    <BarChart3 className="h-12 w-12 mx-auto" />
+                    <BarChart3 className="h-12 w-12 mx-auto animate-bounce-gentle" />
                   </div>
                   <h4 className="text-lg font-medium text-gray-900 mb-2">No notes found</h4>
                   <p className="text-gray-600 mb-4">
@@ -300,6 +300,7 @@ export const EnhancedDashboard: React.FC = () => {
                   <Button
                     onClick={() => setShowForm(true)}
                     variant="primary"
+                    className="interactive-glow"
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Create Your First Note
@@ -311,15 +312,16 @@ export const EnhancedDashboard: React.FC = () => {
                     ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
                     : 'space-y-4'
                 }>
-                  {sortedNotes.map((note) => (
-                    <EnhancedNoteCard
-                      key={note.id}
-                      note={note}
-                      onDelete={deleteNote}
-                      onToggleFavorite={toggleFavorite}
-                      onView={handleNoteView}
-                      onEdit={handleEditNote}
-                    />
+                  {sortedNotes.map((note, index) => (
+                    <div key={note.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <EnhancedNoteCard
+                        note={note}
+                        onDelete={deleteNote}
+                        onToggleFavorite={toggleFavorite}
+                        onView={handleNoteView}
+                        onEdit={handleEditNote}
+                      />
+                    </div>
                   ))}
                 </div>
               )}

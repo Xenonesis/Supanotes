@@ -10,22 +10,28 @@ export interface FileUploadResult {
 export const uploadFile = async (
   file: File,
   userId: string,
-  contentType: 'audio' | 'image'
+  contentType: 'audio' | 'image' | 'profile'
 ): Promise<FileUploadResult> => {
   try {
     // Generate unique filename
     const fileExt = file.name.split('.').pop()
-    const fileName = `${userId}/${contentType}/${uuidv4()}.${fileExt}`
+    const fileName = contentType === 'profile' 
+      ? `${userId}/profile/avatar.${fileExt}`
+      : `${userId}/${contentType}/${uuidv4()}.${fileExt}`
     
     // Upload file to Supabase Storage
     const { data, error } = await supabase.storage
       .from('notes-media')
       .upload(fileName, file, {
         cacheControl: '3600',
-        upsert: false
+        upsert: contentType === 'profile' // Allow overwriting for profile pictures
       })
 
     if (error) {
+      // Provide more specific error messages
+      if (error.message.includes('Bucket not found')) {
+        throw new Error('Storage bucket "notes-media" not found. Please create it in your Supabase dashboard. See SETUP_INSTRUCTIONS.md for detailed steps.')
+      }
       throw new Error(`Upload failed: ${error.message}`)
     }
 

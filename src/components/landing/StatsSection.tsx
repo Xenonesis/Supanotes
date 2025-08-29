@@ -26,7 +26,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ isVisible }) => {
     <section className={`relative px-6 py-16 ${
       isDark 
         ? 'bg-[#0C0C0C]/50 backdrop-blur-sm border-y border-gray-700/20' 
-        : 'bg-gradient-to-r from-white/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm border-y border-white/20'
+        : 'bg-gradient-to-r from-[#F6F0F0]/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm border-y border-white/20'
     }`}>
       <div className="max-w-4xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

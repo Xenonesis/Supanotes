@@ -17,7 +17,7 @@ const convertMarkdownToHtml = (markdown: string) => {
     .replace(/\*(.*?)\*/gim, '<em class="italic">$1</em>')
     .replace(/__(.*?)__/gim, '<u class="underline">$1</u>')
     .replace(/`(.*?)`/gim, '<code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-xs font-mono">$1</code>')
-    .replace(/^\> (.*$)/gim, '<blockquote class="border-l-2 border-gray-300 dark:border-gray-600 pl-2 italic text-gray-600 dark:text-gray-400">$1</blockquote>')
+    .replace(/^> (.*$)/gim, '<blockquote class="border-l-2 border-gray-300 dark:border-gray-600 pl-2 italic text-gray-600 dark:text-gray-400">$1</blockquote>')
     .replace(/^\* (.*$)/gim, '<li class="ml-2">• $1</li>')
     .replace(/^\d+\. (.*$)/gim, '<li class="ml-2">$1</li>')
     .replace(/\n/gim, '<br>')
@@ -249,7 +249,7 @@ export const EnhancedNoteCard: React.FC<EnhancedNoteCardProps> = ({
   }
 
   return (
-    <Card className="transition-all duration-200 hover:shadow-lg hover:scale-[1.02] bg-white/80 backdrop-blur-sm border-gray-200/50">
+    <Card className="transition-all duration-300 hover:shadow-xl hover:scale-[1.02] bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-soft interactive-lift animate-fade-in-up">
       <CardContent className="p-5">
         <div className="space-y-3">
           {/* Header with title, content type and actions */}

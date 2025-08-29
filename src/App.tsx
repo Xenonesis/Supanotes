@@ -10,6 +10,7 @@ import { EnhancedBasicDashboard } from './components/Dashboard/EnhancedBasicDash
 import { NotePreviewPage } from './components/Dashboard/NotePreviewPage'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import DatabaseTestPage from './components/DatabaseTestPage'
+import { ProfilePage } from './components/Dashboard/ProfilePage'
 
 import { OAuthHandler } from './components/OAuthHandler'
 
@@ -45,6 +46,7 @@ const AppContent: React.FC = () => {
         <Route path="/preview" element={user ? <NotePreviewPage /> : <LandingPage />} />
         <Route path="/auth/*" element={!user ? <AuthPage /> : <EnhancedBasicDashboard />} />
         <Route path="/dashboard" element={user ? <EnhancedBasicDashboard /> : <LandingPage />} />
+        <Route path="/profile" element={user ? <ProfilePage /> : <LandingPage />} />
         <Route path="/*" element={user ? <EnhancedBasicDashboard /> : <LandingPage />} />
       </Routes>
       
