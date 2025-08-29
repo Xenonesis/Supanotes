@@ -95,6 +95,9 @@ module.exports = {
         'shimmer': 'shimmer 2s linear infinite',
         'spin-slow': 'spin 3s linear infinite',
         'ping-slow': 'pingSlow 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'marquee': 'marquee var(--duration, 30s) linear infinite',
+        'scroll': 'scroll 30s linear infinite',
+        'marquee-slide': 'marquee-slide 30s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -167,6 +170,18 @@ module.exports = {
         },
         pingSlow: {
           '75%, 100%': { transform: 'scale(1.5)', opacity: '0' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        scroll: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        'marquee-slide': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
       backdropBlur: {

@@ -17,6 +17,7 @@ import {
 import { Button } from './ui/Button'
 import { Card, CardContent } from './ui/Card'
 import { Input } from './ui/Input'
+import DatabaseWithRestApi from './ui/database-with-rest-api'
 
 export const DemoPreview: React.FC = () => {
   const navigate = useNavigate()
@@ -273,6 +274,40 @@ export const DemoPreview: React.FC = () => {
             </p>
           </div>
         )}
+
+        {/* Database API Component Demo */}
+        <div className="mt-16">
+          <Card className="glass">
+            <CardContent className="p-8">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Powered by Modern REST API
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-8">
+                  Our note-taking platform uses a robust REST API architecture for seamless data management
+                </p>
+              </div>
+              
+              <div className="flex justify-center">
+                <DatabaseWithRestApi 
+                  title="NoteMaster REST API Integration"
+                  circleText="API"
+                  lightColor="#3b82f6"
+                  badgeTexts={{
+                    first: "NOTES",
+                    second: "AUTH", 
+                    third: "FILES",
+                    fourth: "SYNC"
+                  }}
+                  buttonTexts={{
+                    first: "NoteMaster",
+                    second: "v2_demo"
+                  }}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* CTA Section */}
         <div className="mt-16 text-center">

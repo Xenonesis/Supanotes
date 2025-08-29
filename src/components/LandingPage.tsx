@@ -29,6 +29,8 @@ import { Button } from './ui/Button'
 import { Card, CardContent } from './ui/Card'
 import { ThemeToggleIcon } from './ui/ThemeToggle'
 import { HeroGeometric } from './ui/shape-landing-hero'
+import { MarqueeDemo } from './ui/marquee-demo'
+import DatabaseWithRestApi from './ui/database-with-rest-api'
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate()
@@ -195,91 +197,95 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="relative px-6 py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:bg-gray-900/50 backdrop-blur-sm">
+      {/* REST API Architecture Section */}
+      <section className="relative px-6 py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-blue-800 to-indigo-900 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-              How It Works
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+              Built on Modern Architecture
             </h2>
-            <p className="text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-              Get started in minutes with our simple, intuitive workflow.
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+              NoteMaster leverages a robust REST API architecture with real-time synchronization, 
+              ensuring your notes are always secure, fast, and accessible across all your devices.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="flex justify-center mb-16">
+            <DatabaseWithRestApi 
+              title="NoteMaster REST API - Secure & Scalable"
+              circleText="API"
+              lightColor="#3b82f6"
+              badgeTexts={{
+                first: "NOTES",
+                second: "AUTH", 
+                third: "SYNC",
+                fourth: "SECURE"
+              }}
+              buttonTexts={{
+                first: "NoteMaster",
+                second: "production"
+              }}
+            />
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                step: "1",
-                title: "Sign Up",
-                description: "Create your account with just an email. No complex setup required.",
-                icon: Users,
-                color: "from-blue-500 to-cyan-500"
-              },
-              {
-                step: "2",
-                title: "Start Writing",
-                description: "Use our rich text editor to create beautiful, formatted notes instantly.",
-                icon: PenTool,
-                color: "from-purple-500 to-pink-500"
-              },
-              {
-                step: "3",
-                title: "Stay Organized",
-                description: "Search, filter, and organize your notes with powerful tools and features.",
-                icon: Search,
+                icon: Shield,
+                title: "Enterprise Security",
+                description: "End-to-end encryption with secure authentication and authorization protocols.",
                 color: "from-green-500 to-emerald-500"
+              },
+              {
+                icon: Zap,
+                title: "Lightning Fast",
+                description: "Optimized API endpoints with caching and CDN delivery for instant response times.",
+                color: "from-yellow-500 to-orange-500"
+              },
+              {
+                icon: RefreshCw,
+                title: "Real-time Sync",
+                description: "Seamless synchronization across all devices with conflict resolution and offline support.",
+                color: "from-blue-500 to-purple-500"
               }
-            ].map((step, index) => (
-              <div key={index} className="text-center group">
-                <div className="relative mb-8">
-                  <div className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br ${step.color} rounded-3xl text-white shadow-xl shadow-blue-500/20 group-hover:shadow-2xl group-hover:shadow-blue-500/30 transition-all duration-300 transform group-hover:scale-110 group-hover:-translate-y-2`}>
-                    <step.icon className="w-10 h-10" />
+            ].map((feature, index) => (
+              <Card
+                key={index}
+                className="glass hover:glass-strong transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
+              >
+                <CardContent className="p-6 text-center">
+                  <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br ${feature.color} rounded-xl mb-4 text-white shadow-lg`}>
+                    <feature.icon className="w-6 h-6" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-white to-blue-50 dark:bg-gray-800 rounded-full flex items-center justify-center text-sm font-bold text-slate-700 dark:text-white shadow-lg border border-blue-100 dark:border-gray-700">
-                    {step.step}
-                  </div>
-                </div>
-                <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-slate-900 to-blue-800 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                  {step.title}
-                </h3>
-                <p className="text-slate-600 dark:text-gray-400 leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
+                  <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative px-6 py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Transform Your Note-Taking?
-          </h2>
-          <p className="text-xl mb-12 opacity-90">
-            Join thousands of users who have already discovered the power of organized thinking.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <Button
-              onClick={() => navigate('/auth/signup')}
-              size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-100 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg font-semibold"
-            >
-              <Zap className="w-5 h-5 mr-2" />
-              Get Started Free
-            </Button>
-            
-            <div className="flex items-center space-x-2 text-white/80">
-              <CheckCircle className="w-5 h-5" />
-              <span>No credit card required</span>
-            </div>
+      {/* Technology Stack Marquee */}
+      <section className="w-full py-12 bg-gradient-to-br from-white via-blue-50 to-indigo-50 dark:from-gray-800 dark:via-gray-900 dark:to-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              Technology Stack
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Built with modern technologies and frameworks for optimal performance and developer experience.
+            </p>
           </div>
+          <MarqueeDemo />
         </div>
       </section>
+
+      
 
       {/* Footer */}
       <footer className="relative px-6 py-12 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 dark:bg-black text-white">

@@ -9,6 +9,7 @@ import { AuthPage } from './components/Auth/AuthPage'
 import { EnhancedBasicDashboard } from './components/Dashboard/EnhancedBasicDashboard'
 import { NotePreviewPage } from './components/Dashboard/NotePreviewPage'
 import { LoadingSpinner } from './components/LoadingSpinner'
+import DatabaseTestPage from './components/DatabaseTestPage'
 
 import { OAuthHandler } from './components/OAuthHandler'
 
@@ -40,6 +41,7 @@ const AppContent: React.FC = () => {
     <div className="min-h-screen gradient-bg">
       <Routes>
         <Route path="/demo" element={<DemoPreview />} />
+        <Route path="/database-test" element={<DatabaseTestPage />} />
         <Route path="/preview" element={user ? <NotePreviewPage /> : <LandingPage />} />
         <Route path="/auth/*" element={!user ? <AuthPage /> : <EnhancedBasicDashboard />} />
         <Route path="/dashboard" element={user ? <EnhancedBasicDashboard /> : <LandingPage />} />
