@@ -25,7 +25,7 @@ export const EnhancedBasicDashboard: React.FC = () => {
 
   // Filter and sort notes
   useEffect(() => {
-    let filtered = notes.filter(note => 
+    const filtered = notes.filter(note => 
       (note.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (note.content || '').toLowerCase().includes(searchQuery.toLowerCase())
     )
@@ -36,7 +36,7 @@ export const EnhancedBasicDashboard: React.FC = () => {
         case 'oldest':
           return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
         case 'title':
-          return a.title.localeCompare(b.title)
+          return (a.title || '').localeCompare(b.title || '')
         case 'newest':
         default:
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -46,16 +46,22 @@ export const EnhancedBasicDashboard: React.FC = () => {
     setFilteredNotes(filtered)
   }, [notes, searchQuery, sortMode])
 
-  const handleNoteView = (noteId: string) => {
-    console.log('Viewing note:', noteId)
-  }
 
-  const handleCreateNote = async (noteData: any) => {
+  const handleCreateNote = async (content: string) => {
     try {
-      await createNote(noteData)
+      await createNote(content)
       setShowForm(false)
     } catch (error) {
       console.error('Error creating note:', error)
+    }
+  }
+
+  const handleCreateMultimediaNote = async (content: string, contentType: 'text' | 'image' | 'audio' | 'mixed', file?: File) => {
+    try {
+      await createMultimediaNote(content, contentType, file)
+      setShowForm(false)
+    } catch (error) {
+      console.error('Error creating multimedia note:', error)
     }
   }
 
@@ -64,7 +70,7 @@ export const EnhancedBasicDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen gradient-bg-animated">
+    <div className="gradient-bg-animated">
       <Header />
       
       <main className="max-w-7xl mx-auto mobile-padding py-8">
@@ -207,7 +213,7 @@ export const EnhancedBasicDashboard: React.FC = () => {
                 <CardContent className="p-6">
                   <NoteForm
                     onSubmit={handleCreateNote}
-                    onCancel={() => setShowForm(false)}
+                    onMultimediaSubmit={handleCreateMultimediaNote}
                   />
                 </CardContent>
               </Card>
@@ -262,9 +268,7 @@ export const EnhancedBasicDashboard: React.FC = () => {
                   >
                     <NoteCard
                       note={note}
-                      onView={() => handleNoteView(note.id)}
                       onDelete={() => deleteNote(note.id)}
-                      viewMode={viewMode}
                     />
                   </div>
                 ))}

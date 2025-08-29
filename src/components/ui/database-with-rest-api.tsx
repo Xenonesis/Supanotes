@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { Folder, HeartHandshakeIcon, SparklesIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface DatabaseWithRestApiProps {
   className?: string;
@@ -30,6 +31,23 @@ const DatabaseWithRestApi = ({
   title,
   lightColor,
 }: DatabaseWithRestApiProps) => {
+  const { isDark } = useTheme();
+  
+  // Default light color based on theme
+  const defaultLightColor = isDark ? "#60a5fa" : "#3b82f6";
+  const effectiveLightColor = lightColor || defaultLightColor;
+  
+  // Theme-based colors
+  const bgColor = isDark ? "#101112" : "#18181B";
+  const textColor = isDark ? "#e5e7eb" : "#ffffff";
+  const borderColor = isDark ? "#374151" : "#currentColor";
+  const backgroundGradient = isDark 
+    ? "bg-gradient-to-br from-gray-900 to-gray-800" 
+    : "bg-gradient-to-br from-white to-gray-100";
+  const boxShadow = isDark 
+    ? "shadow-[0_10px_25px_-3px_rgba(0,0,0,0.3),0_4px_6px_-2px_rgba(0,0,0,0.2)]" 
+    : "shadow-[0_10px_25px_-3px_rgba(0,0,0,0.1),0_4px_6px_-2px_rgba(0,0,0,0.05)]";
+
   return (
     <div
       className={cn(
@@ -39,13 +57,13 @@ const DatabaseWithRestApi = ({
     >
       {/* SVG Paths  */}
       <svg
-        className="h-full sm:w-full text-muted"
+        className={`h-full sm:w-full ${isDark ? 'text-gray-600' : 'text-muted'}`}
         width="100%"
         height="100%"
         viewBox="0 0 200 100"
       >
         <g
-          stroke="currentColor"
+          stroke={borderColor}
           fill="none"
           strokeWidth="0.4"
           strokeDasharray="100 100"
@@ -107,22 +125,22 @@ const DatabaseWithRestApi = ({
         </g>
 
         {/* Buttons */}
-        <g stroke="currentColor" fill="none" strokeWidth="0.4">
+        <g stroke={borderColor} fill="none" strokeWidth="0.4">
           {/* First Button */}
           <g>
             <rect
-              fill="#18181B"
+              fill={bgColor}
               x="14"
               y="5"
               width="34"
               height="10"
               rx="5"
             ></rect>
-            <DatabaseIcon x="18" y="7.5"></DatabaseIcon>
+            <DatabaseIcon x="18" y="7.5" strokeColor={textColor}></DatabaseIcon>
             <text
               x="28"
               y="12"
-              fill="white"
+              fill={textColor}
               stroke="none"
               fontSize="5"
               fontWeight="500"
@@ -134,18 +152,18 @@ const DatabaseWithRestApi = ({
           {/* Second Button */}
           <g>
             <rect
-              fill="#18181B"
+              fill={bgColor}
               x="60"
               y="5"
               width="34"
               height="10"
               rx="5"
             ></rect>
-            <DatabaseIcon x="64" y="7.5"></DatabaseIcon>
+            <DatabaseIcon x="64" y="7.5" strokeColor={textColor}></DatabaseIcon>
             <text
               x="74"
               y="12"
-              fill="white"
+              fill={textColor}
               stroke="none"
               fontSize="5"
               fontWeight="500"
@@ -157,18 +175,18 @@ const DatabaseWithRestApi = ({
           {/* Third Button */}
           <g>
             <rect
-              fill="#18181B"
+              fill={bgColor}
               x="108"
               y="5"
               width="34"
               height="10"
               rx="5"
             ></rect>
-            <DatabaseIcon x="112" y="7.5"></DatabaseIcon>
+            <DatabaseIcon x="112" y="7.5" strokeColor={textColor}></DatabaseIcon>
             <text
               x="122"
               y="12"
-              fill="white"
+              fill={textColor}
               stroke="none"
               fontSize="5"
               fontWeight="500"
@@ -180,18 +198,18 @@ const DatabaseWithRestApi = ({
           {/* Fourth Button */}
           <g>
             <rect
-              fill="#18181B"
+              fill={bgColor}
               x="150"
               y="5"
               width="40"
               height="10"
               rx="5"
             ></rect>
-            <DatabaseIcon x="154" y="7.5"></DatabaseIcon>
+            <DatabaseIcon x="154" y="7.5" strokeColor={textColor}></DatabaseIcon>
             <text
               x="165"
               y="12"
-              fill="white"
+              fill={textColor}
               stroke="none"
               fontSize="5"
               fontWeight="500"
@@ -240,7 +258,7 @@ const DatabaseWithRestApi = ({
 
           {/* Blue Grad */}
           <radialGradient id="db-blue-grad" fx="1">
-            <stop offset="0%" stopColor={lightColor || "#3b82f6"} />
+            <stop offset="0%" stopColor={effectiveLightColor} />
             <stop offset="100%" stopColor="transparent" />
           </radialGradient>
         </defs>
@@ -249,57 +267,85 @@ const DatabaseWithRestApi = ({
       {/* Main Box */}
       <div className="absolute bottom-10 flex w-full flex-col items-center">
         {/* bottom shadow */}
-        <div className="absolute -bottom-4 h-[100px] w-[62%] rounded-lg bg-accent/30" />
+        <div className={`absolute -bottom-4 h-[100px] w-[62%] rounded-lg ${isDark ? 'bg-gray-800/30' : 'bg-accent/30'}`} />
 
         {/* box title */}
-        <div className="absolute -top-3 z-20 flex items-center justify-center rounded-lg border bg-[#101112] px-2 py-1 sm:-top-4 sm:py-1.5">
-          <SparklesIcon className="size-3" />
-          <span className="ml-2 text-[10px]">
+        <div className={`absolute -top-3 z-20 flex items-center justify-center rounded-lg border px-2 py-1 sm:-top-4 sm:py-1.5 ${
+          isDark 
+            ? 'bg-gray-900 border-gray-700' 
+            : 'bg-[#101112] border-gray-800'
+        }`}>
+          <SparklesIcon className={`size-3 ${isDark ? 'text-blue-400' : 'text-blue-300'}`} />
+          <span className={`ml-2 text-[10px] ${isDark ? 'text-gray-200' : 'text-gray-100'}`}>
             {title ? title : "Data exchange using a customized REST API"}
           </span>
         </div>
 
         {/* box outter circle */}
-        <div className="absolute -bottom-8 z-30 grid h-[60px] w-[60px] place-items-center rounded-full border-t bg-[#141516] font-semibold text-xs">
+        <div className={`absolute -bottom-8 z-30 grid h-[60px] w-[60px] place-items-center rounded-full border-t font-semibold text-xs ${
+          isDark 
+            ? 'bg-gray-900 border-gray-700 text-gray-200' 
+            : 'bg-[#141516] border-gray-800 text-gray-100'
+        }`}>
           {circleText ? circleText : "API"}
         </div>
 
         {/* box content */}
-        <div className="relative z-10 flex h-[150px] w-full items-center justify-center overflow-hidden rounded-lg border bg-background shadow-md">
+        <div className={`relative z-10 flex h-[150px] w-full items-center justify-center overflow-hidden rounded-lg border shadow-md ${
+          isDark 
+            ? 'bg-gray-900 border-gray-700' 
+            : 'bg-background border-gray-200'
+        }`}>
           {/* Badges */}
-          <div className="absolute bottom-8 left-12 z-10 h-7 rounded-full bg-[#101112] px-3 text-xs border flex items-center gap-2 ">
+          <div className={`absolute bottom-8 left-12 z-10 h-7 rounded-full px-3 text-xs border flex items-center gap-2 ${
+            isDark 
+              ? 'bg-gray-800 border-gray-700 text-gray-200' 
+              : 'bg-[#101112] border-gray-800 text-gray-100'
+          }`}>
             <HeartHandshakeIcon className="size-4" />
             <span>{buttonTexts?.first || "LegionDev"}</span>
           </div>
-          <div className="absolute right-16 z-10 hidden h-7 rounded-full bg-[#101112] px-3 text-xs sm:flex border items-center gap-2">
+          <div className={`absolute right-16 z-10 hidden h-7 rounded-full px-3 text-xs sm:flex border items-center gap-2 ${
+            isDark 
+              ? 'bg-gray-800 border-gray-700 text-gray-200' 
+              : 'bg-[#101112] border-gray-800 text-gray-100'
+          }`}>
             <Folder className="size-4" />
             <span>{buttonTexts?.second || "v2_updates"}</span>
           </div>
 
           {/* Circles */}
           <motion.div
-            className="absolute -bottom-14 h-[100px] w-[100px] rounded-full border-t bg-accent/5"
+            className={`absolute -bottom-14 h-[100px] w-[100px] rounded-full border-t ${
+              isDark ? 'bg-gray-800/20 border-gray-700' : 'bg-accent/5 border-gray-200'
+            }`}
             animate={{
               scale: [0.98, 1.02, 0.98, 1, 1, 1, 1, 1, 1],
             }}
             transition={{ duration: 2, repeat: Infinity }}
           />
           <motion.div
-            className="absolute -bottom-20 h-[145px] w-[145px] rounded-full border-t bg-accent/5"
+            className={`absolute -bottom-20 h-[145px] w-[145px] rounded-full border-t ${
+              isDark ? 'bg-gray-800/20 border-gray-700' : 'bg-accent/5 border-gray-200'
+            }`}
             animate={{
               scale: [1, 1, 1, 0.98, 1.02, 0.98, 1, 1, 1],
             }}
             transition={{ duration: 2, repeat: Infinity }}
           />
           <motion.div
-            className="absolute -bottom-[100px] h-[190px] w-[190px] rounded-full border-t bg-accent/5"
+            className={`absolute -bottom-[100px] h-[190px] w-[190px] rounded-full border-t ${
+              isDark ? 'bg-gray-800/20 border-gray-700' : 'bg-accent/5 border-gray-200'
+            }`}
             animate={{
               scale: [1, 1, 1, 1, 1, 0.98, 1.02, 0.98, 1, 1],
             }}
             transition={{ duration: 2, repeat: Infinity }}
           />
           <motion.div
-            className="absolute -bottom-[120px] h-[235px] w-[235px] rounded-full border-t bg-accent/5"
+            className={`absolute -bottom-[120px] h-[235px] w-[235px] rounded-full border-t ${
+              isDark ? 'bg-gray-800/20 border-gray-700' : 'bg-accent/5 border-gray-200'
+            }`}
             animate={{
               scale: [1, 1, 1, 1, 1, 1, 0.98, 1.02, 0.98, 1],
             }}
@@ -313,7 +359,7 @@ const DatabaseWithRestApi = ({
 
 export default DatabaseWithRestApi;
 
-const DatabaseIcon = ({ x = "0", y = "0" }: { x: string; y: string }) => {
+const DatabaseIcon = ({ x = "0", y = "0", strokeColor = "white" }: { x: string; y: string; strokeColor?: string }) => {
   return (
     <svg
       x={x}
@@ -323,7 +369,7 @@ const DatabaseIcon = ({ x = "0", y = "0" }: { x: string; y: string }) => {
       height="5"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="white"
+      stroke={strokeColor}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

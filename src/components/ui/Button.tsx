@@ -1,5 +1,6 @@
 import React from 'react'
 import { cn } from '../../lib/utils'
+import { useTheme } from '../../contexts/ThemeContext'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'outline' | 'ghost' | 'success' | 'warning'
@@ -20,16 +21,18 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseClasses = 'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative overflow-hidden group touch-target'
+  const { isDark } = useTheme();
+  
+  const baseClasses = 'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative overflow-hidden group touch-target'
   
   const variantClasses = {
-    primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-soft hover:shadow-soft-lg dark:bg-primary-600 dark:hover:bg-primary-700',
-    secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 shadow-soft hover:shadow-soft-lg',
-    danger: 'bg-danger-600 text-white hover:bg-danger-700 focus:ring-danger-500 shadow-soft hover:shadow-soft-lg dark:bg-danger-600 dark:hover:bg-danger-700',
-    success: 'bg-success-600 text-white hover:bg-success-700 focus:ring-success-500 shadow-soft hover:shadow-soft-lg dark:bg-success-600 dark:hover:bg-success-700',
-    warning: 'bg-warning-600 text-white hover:bg-warning-700 focus:ring-warning-500 shadow-soft hover:shadow-soft-lg dark:bg-warning-600 dark:hover:bg-warning-700',
-    outline: 'border-2 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:border-gray-500',
-    ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-500 dark:text-gray-300 dark:hover:bg-gray-800',
+    primary: `bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-soft hover:shadow-soft-lg ${isDark ? 'dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-offset-gray-900' : 'focus:ring-offset-white'}`,
+    secondary: `bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-soft hover:shadow-soft-lg ${isDark ? 'dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:focus:ring-offset-gray-900' : 'focus:ring-offset-white'}`,
+    danger: `bg-danger-600 text-white hover:bg-danger-700 focus:ring-danger-500 shadow-soft hover:shadow-soft-lg ${isDark ? 'dark:bg-danger-600 dark:hover:bg-danger-700 dark:focus:ring-offset-gray-900' : 'focus:ring-offset-white'}`,
+    success: `bg-success-600 text-white hover:bg-success-700 focus:ring-success-500 shadow-soft hover:shadow-soft-lg ${isDark ? 'dark:bg-success-600 dark:hover:bg-success-700 dark:focus:ring-offset-gray-900' : 'focus:ring-offset-white'}`,
+    warning: `bg-warning-600 text-white hover:bg-warning-700 focus:ring-warning-500 shadow-soft hover:shadow-soft-lg ${isDark ? 'dark:bg-warning-600 dark:hover:bg-warning-700 dark:focus:ring-offset-gray-900' : 'focus:ring-offset-white'}`,
+    outline: `border-2 text-gray-700 hover:bg-gray-50 focus:ring-primary-500 ${isDark ? 'border-gray-600 bg-gray-800 text-gray-300 hover:bg-gray-700 hover:border-gray-500 dark:focus:ring-offset-gray-900' : 'border-gray-300 bg-white focus:ring-offset-white'}`,
+    ghost: `text-gray-700 hover:bg-gray-100 focus:ring-gray-500 ${isDark ? 'dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:ring-offset-gray-900' : 'focus:ring-offset-white'}`,
   }
   
   const sizeClasses = {
@@ -87,7 +90,7 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {/* Ripple effect */}
       <span className="absolute inset-0 overflow-hidden rounded-xl">
-        <span className="absolute inset-0 bg-white/20 transform scale-0 group-active:scale-100 transition-transform duration-200 rounded-xl" />
+        <span className={`absolute inset-0 transform scale-0 group-active:scale-100 transition-transform duration-200 rounded-xl ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
       </span>
       
       {/* Content */}

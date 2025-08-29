@@ -6,23 +6,18 @@ import {
   Zap, 
   Search, 
   Download, 
-  Upload, 
-  Smartphone, 
   Globe, 
   Star, 
   ArrowRight, 
-  CheckCircle, 
   Users, 
   Clock, 
   FileText,
-  Sparkles,
-  BookOpen,
+ Sparkles,
   Lock,
   RefreshCw,
   Palette,
-  Moon,
-  Sun,
-  Monitor
+  Menu,
+  X
 } from 'lucide-react'
 import { Logo } from './ui/Logo'
 import { Button } from './ui/Button'
@@ -31,11 +26,28 @@ import { ThemeToggleIcon } from './ui/ThemeToggle'
 import { HeroGeometric } from './ui/shape-landing-hero'
 import { MarqueeDemo } from './ui/marquee-demo'
 import DatabaseWithRestApi from './ui/database-with-rest-api'
+import { useTheme } from '../contexts/ThemeContext'
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate()
+  const { isDark } = useTheme()
   const [isVisible, setIsVisible] = useState(false)
   const [activeFeature, setActiveFeature] = useState(0)
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     setIsVisible(true)
@@ -95,9 +107,13 @@ export const LandingPage: React.FC = () => {
   ]
 
   return (
-    <div className="min-h-screen overflow-hidden">
-      {/* Navigation - Overlay on hero */}
-      <nav className="absolute top-0 left-0 right-0 z-50 px-6 py-4">
+    <div className={`min-h-screen overflow-hidden ${isDark ? 'dark' : ''}`}>
+      {/* Navigation - Fixed at top */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-3 sm:py-4 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm border-b border-gray-200/20 dark:border-gray-700/20' 
+          : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200/30 dark:border-gray-700/30'
+      }`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Logo size="lg" className="animate-pulse" />
@@ -106,12 +122,17 @@ export const LandingPage: React.FC = () => {
             </span>
           </div>
           
-          <div className="flex items-center space-x-4">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-4">
             <ThemeToggleIcon />
             <Button
               onClick={() => navigate('/auth/signin')}
               variant="outline"
-              className="bg-white/90 dark:bg-gray-800/90 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500 hover:text-gray-900 dark:hover:text-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md"
+              className={`${
+                isDark 
+                  ? 'bg-gray-800/90 border-gray-600 text-gray-200 hover:bg-gray-700 hover:border-gray-500 hover:text-white' 
+                  : 'bg-white/90 border-gray-200 text-gray-700 hover:bg-white hover:border-gray-300 hover:text-gray-900'
+              } backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md`}
             >
               Sign In
             </Button>
@@ -122,20 +143,69 @@ export const LandingPage: React.FC = () => {
               Get Started
             </Button>
           </div>
+          
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeToggleIcon />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800 dark:focus:ring-primary-500 dark:focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
+        
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden mt-3 animate-fade-in-up">
+            <div className="glass rounded-2xl p-4 space-y-4 shadow-lg">
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  onClick={() => {
+                    navigate('/auth/signin')
+                    setMobileMenuOpen(false)
+                  }}
+                  variant="outline"
+                  size="md"
+                  className="w-full"
+                >
+                  Sign In
+                </Button>
+                <Button
+                  onClick={() => {
+                    navigate('/auth/signup')
+                    setMobileMenuOpen(false)
+                  }}
+                  size="md"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-500 dark:to-purple-500 dark:hover:from-blue-600 dark:hover:to-purple-600 text-white"
+                >
+                  Get Started
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
-      <HeroGeometric
-        badge="The future of note-taking is here"
-        title1="Your Ideas,"
-        title2="Beautifully Organized"
-        onGetStarted={() => navigate('/auth/signup')}
-        onViewDemo={() => navigate('/demo')}
-      />
+      <div className="pt-20">
+        <HeroGeometric
+          badge="The future of note-taking is here"
+          title1="Your Ideas,"
+          title2="Beautifully Organized"
+          onGetStarted={() => navigate('/auth/signup')}
+          onViewDemo={() => navigate('/demo')}
+        />
+      </div>
 
       {/* Stats Section */}
-      <section className="relative px-6 py-16 bg-gradient-to-r from-white/80 via-blue-50/80 to-indigo-50/80 dark:bg-gray-900/50 backdrop-blur-sm border-y border-white/20 dark:border-gray-700/20">
+      <section className={`relative px-6 py-16 ${
+        isDark 
+          ? 'bg-gray-900/50 backdrop-blur-sm border-y border-gray-700/20' 
+          : 'bg-gradient-to-r from-white/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm border-y border-white/20'
+      }`}>
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -147,10 +217,14 @@ export const LandingPage: React.FC = () => {
                 <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-2xl mb-4 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-110">
                   <stat.icon className="w-7 h-7" />
                 </div>
-                <div className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-1">
+                <div className={`text-3xl font-bold mb-1 ${
+                  isDark 
+                    ? 'bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent' 
+                    : 'bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent'
+                }`}>
                   {stat.number}
                 </div>
-                <div className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+                <div className={isDark ? "text-gray-400 text-sm font-medium" : "text-gray-600 text-sm font-medium"}>
                   {stat.label}
                 </div>
               </div>
@@ -160,51 +234,99 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="relative px-6 py-20 gradient-bg-animated">
-        <div className="max-w-7xl mx-auto">
+      <section className={`relative px-6 py-20 overflow-hidden ${isDark ? 'bg-gray-900' : 'gradient-bg-animated'}`}>
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-5 dark:opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 15% 50%, ${isDark ? '#3b82f6' : '#60a5fa'} 0%, transparent 20%), 
+                              radial-gradient(circle at 85% 30%, ${isDark ? '#8b5cf6' : '#a78bfa'} 0%, transparent 20%)`,
+            backgroundSize: '1000px 600px'
+          }}></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-6 text-white shadow-lg shadow-blue-500/30 mx-auto">
+              <Sparkles className="w-8 h-8" />
+            </div>
+            <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${
+              isDark 
+                ? 'bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent' 
+                : 'bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent'
+            }`}>
               Powerful Features
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className={isDark ? "text-xl text-gray-400 max-w-2xl mx-auto" : "text-xl text-gray-600 max-w-2xl mx-auto"}>
               Everything you need to capture, organize, and access your thoughts seamlessly.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card
+              <div
                 key={index}
-                className={`glass hover:glass-strong transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 cursor-pointer group ${
-                  activeFeature === index ? 'ring-2 ring-blue-500 shadow-2xl' : ''
-                }`}
+                className={`glass hover:glass-strong transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 cursor-pointer group relative ${
+                  activeFeature === index ? 'ring-2 ring-blue-500 shadow-2xl shadow-blue-500/30' : 'shadow-lg'
+                } ${isDark ? 'dark:bg-gray-800/50' : ''}`}
                 onClick={() => setActiveFeature(index)}
+                style={{ 
+                  animationDelay: `${index * 100}ms`,
+                  animation: isVisible ? 'fadeInUp 0.6s ease-out forwards' : 'none',
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'none' : 'translateY(20px)'
+                }}
               >
-                <CardContent className="p-8 text-center">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110`}>
-                    <feature.icon className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+                <Card className="h-full">
+                  {/* Feature highlight glow */}
+                  {activeFeature === index && (
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 blur-xl -z-10 animate-pulse-slow"></div>
+                  )}
+                  
+                  <CardContent className="p-8 text-center">
+                    <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 relative overflow-hidden`}>
+                      {/* Shine effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                      <feature.icon className="w-8 h-8 relative z-10" />
+                    </div>
+                    <h3 className={`text-xl font-semibold mb-4 transition-colors duration-300 ${
+                      activeFeature === index 
+                        ? 'text-blue-600 dark:text-blue-400' 
+                        : isDark ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {feature.title}
+                    </h3>
+                    <p className={isDark ? "text-gray-40 leading-relaxed" : "text-gray-600 leading-relaxed"}>
+                      {feature.description}
+                    </p>
+                    
+                    {/* Subtle hover indicator */}
+                    <div className="mt-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <ArrowRight className="w-5 h-5 text-blue-500" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* REST API Architecture Section */}
-      <section className="relative px-6 py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <section className={`relative px-6 py-20 ${
+        isDark 
+          ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
+          : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'
+      }`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${
+              isDark 
+                ? 'bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent' 
+                : 'bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent'
+            }`}>
               Built on Modern Architecture
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+            <p className={isDark ? "text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed" : "text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"}>
               NoteMaster leverages a robust REST API architecture with real-time synchronization, 
               ensuring your notes are always secure, fast, and accessible across all your devices.
             </p>
@@ -214,7 +336,7 @@ export const LandingPage: React.FC = () => {
             <DatabaseWithRestApi 
               title="NoteMaster REST API - Secure & Scalable"
               circleText="API"
-              lightColor="#3b82f6"
+              lightColor={isDark ? "#60a5fa" : "#3b82f6"}
               badgeTexts={{
                 first: "NOTES",
                 second: "AUTH", 
@@ -251,16 +373,18 @@ export const LandingPage: React.FC = () => {
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="glass hover:glass-strong transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
+                className={`glass hover:glass-strong transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 ${
+                  isDark ? 'dark:bg-gray-800/50' : ''
+                }`}
               >
                 <CardContent className="p-6 text-center">
                   <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br ${feature.color} rounded-xl mb-4 text-white shadow-lg`}>
                     <feature.icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
+                  <h3 className={isDark ? "text-lg font-semibold mb-3 text-white" : "text-lg font-semibold mb-3 text-gray-900"}>
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  <p className={isDark ? "text-gray-400 text-sm leading-relaxed" : "text-gray-600 text-sm leading-relaxed"}>
                     {feature.description}
                   </p>
                 </CardContent>
@@ -271,13 +395,17 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Technology Stack Marquee */}
-      <section className="w-full py-12 bg-gradient-to-br from-white via-blue-50 to-indigo-50 dark:from-gray-800 dark:via-gray-900 dark:to-black">
+      <section className={`w-full py-12 ${
+        isDark 
+          ? 'bg-gradient-to-br from-gray-800 via-gray-900 to-black' 
+          : 'bg-gradient-to-br from-white via-blue-50 to-indigo-50'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            <h2 className={isDark ? "text-3xl font-bold text-gray-100 mb-4" : "text-3xl font-bold text-gray-900 mb-4"}>
               Technology Stack
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className={isDark ? "text-lg text-gray-400 max-w-2xl mx-auto" : "text-lg text-gray-600 max-w-2xl mx-auto"}>
               Built with modern technologies and frameworks for optimal performance and developer experience.
             </p>
           </div>
@@ -285,10 +413,12 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      
-
       {/* Footer */}
-      <footer className="relative px-6 py-12 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 dark:bg-black text-white">
+      <footer className={`relative px-6 py-12 ${
+        isDark 
+          ? 'bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 text-white' 
+          : 'bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white'
+      }`}>
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center space-x-3 mb-6 md:mb-0">
@@ -308,7 +438,9 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
           
-          <div className="border-t border-blue-800/30 mt-8 pt-8 text-center text-blue-200 text-sm">
+          <div className={`border-t mt-8 pt-8 text-center text-sm ${
+            isDark ? 'border-blue-800/30 text-blue-200' : 'border-blue-800/30 text-blue-200'
+          }`}>
             <p>&copy; 2024 NoteMaster. All rights reserved. Built with ❤️ for better note-taking.</p>
           </div>
         </div>

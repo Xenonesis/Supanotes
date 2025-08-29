@@ -5,6 +5,7 @@ import {
   Code, Link, Heading1, Heading2, Heading3, AlignLeft, 
   AlignCenter, AlignRight, Undo, Redo, Type, Palette
 } from 'lucide-react'
+import { useTheme } from '../../contexts/ThemeContext'
 
 interface RichTextEditorProps {
   value: string
@@ -21,6 +22,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   disabled = false,
   className = ""
 }) => {
+  const { isDark } = useTheme();
   const [isMarkdownMode, setIsMarkdownMode] = useState(false)
   const [selectedColor, setSelectedColor] = useState('#000000')
   const editorRef = useRef<HTMLDivElement>(null)
@@ -139,9 +141,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   }
 
   return (
-    <div className={`border rounded-lg overflow-hidden ${className}`}>
+    <div className={`border rounded-lg overflow-hidden ${className} ${isDark ? 'border-gray-600' : 'border-gray-200'}`}>
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-1 p-2 border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
+      <div className={`flex flex-wrap items-center gap-1 p-2 border-b ${isDark ? 'border-gray-600 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
         {/* Mode Toggle */}
         <Button
           type="button"
@@ -154,7 +156,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           {isMarkdownMode ? 'Rich' : 'MD'}
         </Button>
 
-        <div className="w-px h-6 bg-gray-300 mx-1" />
+        <div className={`w-px h-6 mx-1 ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`} />
 
         {!isMarkdownMode && (
           <>
@@ -190,7 +192,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
               <Underline className="h-3 w-3" />
             </Button>
 
-            <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className={`w-px h-6 mx-1 ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`} />
 
             {/* Headings */}
             <Button
@@ -224,7 +226,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
               <Heading3 className="h-3 w-3" />
             </Button>
 
-            <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className={`w-px h-6 mx-1 ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`} />
 
             {/* Lists */}
             <Button
@@ -248,7 +250,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
               <ListOrdered className="h-3 w-3" />
             </Button>
 
-            <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className={`w-px h-6 mx-1 ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`} />
 
             {/* Alignment */}
             <Button
@@ -282,7 +284,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
               <AlignRight className="h-3 w-3" />
             </Button>
 
-            <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className={`w-px h-6 mx-1 ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`} />
 
             {/* Color Picker */}
             <div className="relative group">
@@ -295,14 +297,17 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
               >
                 <Palette className="h-3 w-3" />
               </Button>
-              <div className="absolute top-full left-0 mt-1 p-2 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+              <div className={`absolute top-full left-0 mt-1 p-2 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 ${isDark ? 'bg-gray-800 border border-gray-600' : 'bg-white border border-gray-200'}`}>
                 <div className="grid grid-cols-5 gap-1">
                   {colors.map(color => (
                     <button
                       key={color}
                       type="button"
-                      className="w-6 h-6 rounded border border-gray-300 hover:scale-110 transition-transform"
-                      style={{ backgroundColor: color }}
+                      className="w-6 h-6 rounded border hover:scale-110 transition-transform"
+                      style={{ 
+                        backgroundColor: color,
+                        borderColor: isDark ? '#4b5563' : '#d1d5db'
+                      }}
                       onClick={() => {
                         setSelectedColor(color)
                         execCommand('foreColor', color)
@@ -313,7 +318,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
               </div>
             </div>
 
-            <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className={`w-px h-6 mx-1 ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`} />
 
             {/* Undo/Redo */}
             <Button
@@ -347,7 +352,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           disabled={disabled}
-          className="w-full h-48 p-4 border-0 resize-none focus:outline-none font-mono text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+          className={`w-full h-48 p-4 border-0 resize-none focus:outline-none font-mono text-sm ${isDark ? 'bg-gray-700 text-gray-100 placeholder-gray-400' : 'bg-white text-gray-900 placeholder-gray-500'}`}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />
@@ -359,8 +364,8 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           onKeyDown={handleKeyDown}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className={`w-full h-48 p-4 focus:outline-none overflow-y-auto prose prose-sm max-w-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
-            disabled ? 'bg-gray-50 dark:bg-gray-800 cursor-not-allowed' : ''
+          className={`w-full h-48 p-4 focus:outline-none overflow-y-auto prose prose-sm max-w-none ${isDark ? 'bg-gray-700 text-gray-100' : 'bg-white text-gray-900'} ${
+            disabled ? (isDark ? 'bg-gray-800 cursor-not-allowed' : 'bg-gray-50 cursor-not-allowed') : ''
           }`}
           style={{ minHeight: '12rem' }}
           suppressContentEditableWarning={true}
@@ -368,7 +373,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
       )}
 
       {/* Status Bar */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 text-xs text-gray-500 dark:text-gray-400">
+      <div className={`flex items-center justify-between px-4 py-2 border-t text-xs ${isDark ? 'bg-gray-800 border-gray-600 text-gray-400' : 'bg-gray-50 border-gray-200 text-gray-500'}`}>
         <span>
           {isMarkdownMode ? 'Markdown Mode' : 'Rich Text Mode'} • {value.length} characters
         </span>
