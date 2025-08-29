@@ -13,7 +13,7 @@
 [![Vite](https://img.shields.io/badge/Vite-Build-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 
-[🚀 Live Demo](https://your-demo-url.netlify.app) • [📖 Documentation](https://github.com/yourusername/supanotes/wiki) • [🐛 Report Bug](https://github.com/yourusername/supanotes/issues) • [✨ Request Feature](https://github.com/yourusername/supanotes/issues)
+[🚀 Live Demo](https://supanotes-ten.vercel.app/) • [📖 Documentation](https://github.com/yourusername/supanotes/wiki) • [🐛 Report Bug](https://github.com/yourusername/supanotes/issues) • [✨ Request Feature](https://github.com/yourusername/supanotes/issues)
 
 </div>
 
@@ -432,7 +432,29 @@ Supanotes uses a progressive enhancement approach:
 
 ## 🚀 Deployment
 
-### 🌐 Netlify (Recommended)
+## 🚀 Deployment
+
+### ⚡ Vercel (Recommended)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Xenonesis/Supanotes)
+
+1. **Import Project**
+   - Connect your GitHub account to Vercel
+   - Import the Supanotes repository
+
+2. **Configure Environment Variables**
+   - Add your Supabase credentials:
+     ```
+     VITE_SUPABASE_URL=https://your-project.supabase.co
+     VITE_SUPABASE_ANON_KEY=your-anon-key-here
+     ```
+
+3. **Deploy**
+   - Vercel will automatically detect the build settings
+   - Your app will be live with a `.vercel.app` domain
+   - Automatic deployments on every push to main branch
+
+### 🌐 Netlify (Alternative)
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Xenonesis/Supanotes)
 
@@ -444,29 +466,14 @@ Supanotes uses a progressive enhancement approach:
    ```
    Build command: npm run build
    Publish directory: dist
+   Node version: 18
    ```
 
 3. **Environment Variables**
-   - Add your Supabase URL and anon key
-   - Set any custom configuration
+   - Add your Supabase URL and anon key in Netlify dashboard
 
 4. **Deploy!**
    - Your app will be live in minutes
-
-### ⚡ Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Xenonesis/Supanotes)
-
-1. **Import Project**
-   - Connect your GitHub account
-   - Import the repository
-
-2. **Configure**
-   - Build settings are auto-detected
-   - Add environment variables
-
-3. **Deploy**
-   - Automatic deployments on every push
 
 ### 🐳 Docker (Advanced)
 
@@ -486,7 +493,111 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ---
 
-## 🔒 Security Features
+## � SEO Optimization
+
+SupaNotes is fully optimized for search engines with comprehensive SEO implementation including meta tags, structured data, sitemaps, and performance optimizations.
+
+### 🎯 SEO Features Implemented
+
+- **📱 Complete Meta Tags** - Title, description, keywords, Open Graph, Twitter Cards
+- **🔗 Structured Data** - JSON-LD schema for WebApplication and Organization
+- **🗺️ Sitemap & Robots.txt** - Search engine crawling optimization
+- **⚡ Performance Optimization** - Code splitting, compression, and caching
+- **📱 PWA Ready** - Progressive Web App with proper manifest
+- **🔍 Search Engine Friendly** - SPA routing with proper meta tag management
+
+### 📊 SEO Meta Tags
+
+```html
+<!-- Primary Meta Tags -->
+<meta name="title" content="SupaNotes - Advanced Note-Taking Web App" />
+<meta name="description" content="Create, organize, and sync your notes..." />
+<meta name="keywords" content="note taking app, notes, productivity..." />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:title" content="SupaNotes - Advanced Note-Taking Web App" />
+<meta property="og:description" content="Create, organize, and sync your notes..." />
+<meta property="og:image" content="https://supanotes-ten.vercel.app/android-chrome-512x512.png" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="SupaNotes - Advanced Note-Taking Web App" />
+<meta name="twitter:image" content="https://supanotes-ten.vercel.app/android-chrome-512x512.png" />
+```
+
+### 🗺️ SEO Files
+
+- **📄 `/robots.txt`** - Search engine crawling instructions
+- **🗂️ `/sitemap.xml`** - Complete site structure for crawlers
+- **📱 `/site.webmanifest`** - PWA configuration with SEO data
+- **🔧 `/browserconfig.xml`** - Microsoft tile optimization
+
+### ⚡ Performance Optimizations
+
+- **Code Splitting** - Vendor chunks separated for better caching
+- **Asset Optimization** - Images, CSS, and JS optimized
+- **Preconnect Hints** - External domains preconnected
+- **Compression** - Gzip compression enabled
+- **Caching Strategy** - Optimized chunk splitting
+
+### 🔍 SEO Best Practices
+
+#### Content Optimization
+- ✅ **Semantic HTML** - Proper heading hierarchy (H1, H2, H3)
+- ✅ **Alt Text** - All images have descriptive alt attributes
+- ✅ **Meta Descriptions** - Unique, compelling descriptions under 160 characters
+- ✅ **Title Tags** - Unique, keyword-rich titles under 60 characters
+
+#### Technical SEO
+- ✅ **Mobile-Friendly** - Responsive design for all devices
+- ✅ **Fast Loading** - Optimized assets and code splitting
+- ✅ **HTTPS** - Secure connection with SSL certificate
+- ✅ **Clean URLs** - SEO-friendly URL structure
+- ✅ **XML Sitemap** - Complete site structure submitted to search engines
+
+#### Social Media Optimization
+- ✅ **Open Graph Tags** - Rich previews on Facebook, LinkedIn
+- ✅ **Twitter Cards** - Optimized Twitter sharing
+- ✅ **Social Images** - High-quality branded images
+
+### 📈 SEO Monitoring
+
+#### Tools to Use
+- **Google Search Console** - Monitor indexing and search performance
+- **Google Analytics** - Track user behavior and conversions
+- **Screaming Frog** - Technical SEO auditing
+- **GTmetrix/PageSpeed** - Performance monitoring
+- **Ahrefs/SEMrush** - Keyword tracking and competitor analysis
+
+#### Key Metrics to Track
+- **Organic Traffic** - Visitors from search engines
+- **Keyword Rankings** - Target keyword positions
+- **Click-Through Rate** - Meta description effectiveness
+- **Core Web Vitals** - Page loading performance
+- **Mobile Usability** - Mobile user experience
+
+### 🚀 SEO Maintenance
+
+#### Monthly Tasks
+- [ ] **Content Updates** - Add fresh, relevant content
+- [ ] **Keyword Research** - Identify new target keywords
+- [ ] **Backlink Analysis** - Monitor and acquire quality backlinks
+- [ ] **Technical Audit** - Check for broken links and errors
+
+#### Weekly Tasks
+- [ ] **Performance Monitoring** - Check Core Web Vitals
+- [ ] **Search Rankings** - Track keyword positions
+- [ ] **Google Search Console** - Review indexing issues
+
+#### Ongoing Tasks
+- [ ] **User Experience** - Ensure fast, intuitive navigation
+- [ ] **Mobile Optimization** - Test on various devices
+- [ ] **Social Sharing** - Optimize for social media platforms
+
+---
+
+## �🔒 Security Features
 
 ### 🛡️ Data Protection
 - **Row Level Security (RLS)** - Users can only access their own data

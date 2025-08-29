@@ -3,50 +3,133 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NoteMaster - Your Personal Note-Taking App</title>
-    
+
+    <!-- Primary Meta Tags -->
+    <title>SupaNotes - Advanced Note-Taking Web App | Secure Cloud Notes</title>
+    <meta name="title" content="SupaNotes - Advanced Note-Taking Web App | Secure Cloud Notes" />
+    <meta name="description" content="Create, organize, and sync your notes with SupaNotes. Features rich text, images, audio, and cloud storage with enterprise-grade security. Free note-taking app with real-time sync." />
+    <meta name="keywords" content="note taking app, notes, productivity, cloud notes, secure notes, rich text editor, image notes, audio notes, task management, organization, Supabase, React, TypeScript" />
+    <meta name="author" content="SupaNotes Team" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="theme-color" content="#4F46E5" />
+    <meta name="msapplication-TileColor" content="#4F46E5" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://supanotes-ten.vercel.app/" />
+
     <!-- Enhanced Favicon from favicon.io -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    
-    <meta name="description" content="A secure and intuitive note-taking app with cloud sync and authentication" />
-    <meta name="author" content="Dualite Alpha" />
 
-    <meta property="og:title" content="NoteMaster - Your Personal Note-Taking App" />
-    <meta property="og:description" content="A secure and intuitive note-taking app with cloud sync and authentication" />
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://alpha.dualite.dev" />
-    <meta property="og:image" content="https://ibb.co/67X3xfSV" />
-    <meta property="og:image:width" content="960" />
-    <meta property="og:image:height" content="600" />	
-    <meta property="og:image:alt" content="Screenshot of NoteMaster note-taking application" />
+    <meta property="og:url" content="https://supanotes-ten.vercel.app/" />
+    <meta property="og:title" content="SupaNotes - Advanced Note-Taking Web App | Secure Cloud Notes" />
+    <meta property="og:description" content="Create, organize, and sync your notes with SupaNotes. Features rich text, images, audio, and cloud storage with enterprise-grade security." />
+    <meta property="og:image" content="https://supanotes-ten.vercel.app/android-chrome-512x512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="SupaNotes - Advanced Note-Taking Application Logo" />
+    <meta property="og:site_name" content="SupaNotes" />
+    <meta property="og:locale" content="en_US" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="NoteMaster - Your Personal Note-Taking App" />
-    <meta name="twitter:description" content="A secure and intuitive note-taking app with cloud sync and authentication" />
-    <meta name="twitter:site" content="@dualitedev" />
-    <meta name="twitter:image" content="https://ibb.co/67X3xfSV" />
+    <meta name="twitter:url" content="https://supanotes-ten.vercel.app/" />
+    <meta name="twitter:title" content="SupaNotes - Advanced Note-Taking Web App | Secure Cloud Notes" />
+    <meta name="twitter:description" content="Create, organize, and sync your notes with SupaNotes. Features rich text, images, audio, and cloud storage with enterprise-grade security." />
+    <meta name="twitter:image" content="https://supanotes-ten.vercel.app/android-chrome-512x512.png" />
+    <meta name="twitter:image:alt" content="SupaNotes - Advanced Note-Taking Application Logo" />
+    <meta name="twitter:creator" content="@supanotes" />
+    <meta name="twitter:site" content="@supanotes" />
 
-    <link rel="canonical" href="https://alpha.dualite.dev" />
+    <!-- Additional SEO Meta Tags -->
+    <meta name="application-name" content="SupaNotes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="SupaNotes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="msapplication-TileImage" content="/android-chrome-512x512.png" />
 
-     <script type="application/ld+json">
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+
+    <!-- Structured Data - WebSite -->
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "NoteMaster",
-      "url": "https://alpha.dualite.dev",
-      "description": "A secure and intuitive note-taking app with cloud sync and authentication",
+      "@type": "WebApplication",
+      "name": "SupaNotes",
+      "url": "https://supanotes-ten.vercel.app/",
+      "description": "Advanced note-taking web application with rich text editing, image and audio support, cloud synchronization, and enterprise-grade security.",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Rich text editing with Markdown support",
+        "Image and audio note attachments",
+        "Cloud synchronization with Supabase",
+        "User authentication and security",
+        "Advanced search and filtering",
+        "Dark/Light theme support",
+        "Responsive design for all devices",
+        "Real-time collaboration features"
+      ],
+      "screenshot": "https://supanotes-ten.vercel.app/android-chrome-512x512.png",
+      "author": {
+        "@type": "Organization",
+        "name": "SupaNotes Team",
+        "url": "https://supanotes-ten.vercel.app/"
+      },
       "publisher": {
         "@type": "Organization",
-        "name": "Dualite Alpha"
+        "name": "SupaNotes",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://supanotes-ten.vercel.app/android-chrome-512x512.png"
+        }
+      },
+      "potentialAction": {
+        "@type": "UseAction",
+        "target": "https://supanotes-ten.vercel.app/",
+        "description": "Start taking notes with SupaNotes"
       }
     }
     </script>
 
-    <script type="module" crossorigin src="/assets/index-PbmrJOc5.js"></script>
+    <!-- Structured Data - Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "SupaNotes",
+      "url": "https://supanotes-ten.vercel.app/",
+      "logo": "https://supanotes-ten.vercel.app/android-chrome-512x512.png",
+      "description": "Modern note-taking application built with React, TypeScript, and Supabase",
+      "foundingDate": "2024",
+      "sameAs": [
+        "https://github.com/Xenonesis/Supanotes"
+      ]
+    }
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-CJXA0dK_.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-NHdFJPub.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-LyRAx_2A.js">
+    <link rel="modulepreload" crossorigin href="/assets/supabase-tpG8-xNC.js">
     <link rel="stylesheet" crossorigin href="/assets/index-1EPqp849.css">
   </head>
   <body>
