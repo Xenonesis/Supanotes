@@ -2,8 +2,24 @@ import React, { useState, useRef } from 'react'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import { Card, CardContent } from '../ui/Card'
-import { Plus, PenTool, Image, Mic, FileText, X, Eye } from 'lucide-react'
+import { RichTextEditor } from '../ui/RichTextEditor'
+import { Plus, PenTool, Image, Mic, FileText, X, Eye, Type } from 'lucide-react'
 import { NoteContentType } from '../../lib/supabase'
+
+const convertMarkdownToHtml = (markdown: string) => {
+  return markdown
+    .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold mb-2 mt-4">$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2 class="text-xl font-semibold mb-3 mt-4">$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mb-4 mt-4">$1</h1>')
+    .replace(/\*\*(.*?)\*\*/gim, '<strong class="font-semibold">$1</strong>')
+    .replace(/\*(.*?)\*/gim, '<em class="italic">$1</em>')
+    .replace(/__(.*?)__/gim, '<u class="underline">$1</u>')
+    .replace(/`(.*?)`/gim, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">$1</code>')
+    .replace(/^\> (.*$)/gim, '<blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 my-2">$1</blockquote>')
+    .replace(/^\* (.*$)/gim, '<li class="ml-4">• $1</li>')
+    .replace(/^\d+\. (.*$)/gim, '<li class="ml-4">$1</li>')
+    .replace(/\n/gim, '<br>')
+}
 
 interface NoteFormProps {
   onSubmit: (content: string) => Promise<void>
@@ -17,6 +33,7 @@ export const NoteForm: React.FC<NoteFormProps> = ({ onSubmit, onMultimediaSubmit
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [showPreview, setShowPreview] = useState(false)
+  const [useRichText, setUseRichText] = useState(false)
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const audioInputRef = useRef<HTMLInputElement>(null)
@@ -148,19 +165,48 @@ export const NoteForm: React.FC<NoteFormProps> = ({ onSubmit, onMultimediaSubmit
           />
 
           {/* Text input */}
-          <div className="relative">
-            <PenTool className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder={
-                selectedContentType === 'text' 
-                  ? "What's on your mind? Write a new note..."
-                  : `Add a caption for your ${selectedContentType}... (optional)`
-              }
-              disabled={loading}
-              className="w-full pl-10 bg-white/60 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-            />
+          <div className="space-y-3">
+            {selectedContentType === 'text' && (
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-gray-700">Content</label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setUseRichText(!useRichText)}
+                  className="h-7 px-2"
+                >
+                  <Type className="h-3 w-3 mr-1" />
+                  {useRichText ? 'Plain Text' : 'Rich Text'}
+                </Button>
+              </div>
+            )}
+            
+            {useRichText && selectedContentType === 'text' ? (
+              <RichTextEditor
+                value={content}
+                onChange={setContent}
+                placeholder="What's on your mind? Write a new note..."
+                disabled={loading}
+                className="w-full"
+              />
+            ) : (
+              <div className="relative">
+                <PenTool className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder={
+                    selectedContentType === 'text' 
+                      ? "What's on your mind? Write a new note..."
+                      : `Add a caption for your ${selectedContentType}... (optional)`
+                  }
+                  disabled={loading}
+                  rows={4}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg bg-white/60 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 resize-none"
+                />
+              </div>
+            )}
           </div>
 
           {/* File preview */}
@@ -280,10 +326,13 @@ export const NoteForm: React.FC<NoteFormProps> = ({ onSubmit, onMultimediaSubmit
                 {content && (
                   <div className="space-y-2">
                     <h4 className="text-sm font-medium text-gray-700">Content</h4>
-                    <div className="prose max-w-none">
-                      <p className="text-gray-900 whitespace-pre-wrap leading-relaxed bg-gray-50 p-4 rounded-lg border">
-                        {content}
-                      </p>
+                    <div className="prose prose-sm max-w-none">
+                      <div 
+                        className="text-gray-900 leading-relaxed bg-gray-50 p-4 rounded-lg border"
+                        dangerouslySetInnerHTML={{ 
+                          __html: convertMarkdownToHtml(content) 
+                        }}
+                      />
                     </div>
                   </div>
                 )}

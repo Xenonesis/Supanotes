@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Card, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
-import { X, Save, FileText, Image, Mic } from 'lucide-react'
+import { RichTextEditor } from '../ui/RichTextEditor'
+import { X, Save, FileText, Image, Mic, Type } from 'lucide-react'
 import { Note } from '../../lib/supabase'
 
 interface EditNoteModalProps {
@@ -21,6 +22,7 @@ export const EditNoteModal: React.FC<EditNoteModalProps> = ({
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
   const [loading, setLoading] = useState(false)
+  const [useRichText, setUseRichText] = useState(false)
 
   useEffect(() => {
     if (isOpen && note) {
@@ -154,17 +156,41 @@ export const EditNoteModal: React.FC<EditNoteModalProps> = ({
 
           {/* Content Input */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">
-              Content
-            </label>
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Write your note content here..."
-              disabled={loading}
-              rows={8}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
-            />
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-gray-700">
+                Content
+              </label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setUseRichText(!useRichText)}
+                className="h-7 px-2"
+                disabled={loading}
+              >
+                <Type className="h-3 w-3 mr-1" />
+                {useRichText ? 'Plain Text' : 'Rich Text'}
+              </Button>
+            </div>
+            
+            {useRichText ? (
+              <RichTextEditor
+                value={content}
+                onChange={setContent}
+                placeholder="Write your note content here..."
+                disabled={loading}
+                className="w-full"
+              />
+            ) : (
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Write your note content here..."
+                disabled={loading}
+                rows={8}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+              />
+            )}
           </div>
 
           {/* File Preview (if applicable) */}

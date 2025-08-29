@@ -9,6 +9,21 @@ import {
 } from 'lucide-react'
 import { Note, NoteAttachment } from '../../lib/supabase'
 
+const convertMarkdownToHtml = (markdown: string) => {
+  return markdown
+    .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold mb-2 mt-4">$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2 class="text-xl font-semibold mb-3 mt-4">$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mb-4 mt-4">$1</h1>')
+    .replace(/\*\*(.*?)\*\*/gim, '<strong class="font-semibold">$1</strong>')
+    .replace(/\*(.*?)\*/gim, '<em class="italic">$1</em>')
+    .replace(/__(.*?)__/gim, '<u class="underline">$1</u>')
+    .replace(/`(.*?)`/gim, '<code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono">$1</code>')
+    .replace(/^\> (.*$)/gim, '<blockquote class="border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic text-gray-600 dark:text-gray-400 my-2">$1</blockquote>')
+    .replace(/^\* (.*$)/gim, '<li class="ml-4">• $1</li>')
+    .replace(/^\d+\. (.*$)/gim, '<li class="ml-4">$1</li>')
+    .replace(/\n/gim, '<br>')
+}
+
 interface NotePreviewModalProps {
   note: Note | null
   isOpen: boolean
@@ -298,10 +313,13 @@ export const NotePreviewModal: React.FC<NotePreviewModalProps> = ({
           <div className="p-6 space-y-6">
             {/* Text Content */}
             {note.content && (
-              <div className="prose max-w-none">
-                <p className="text-gray-900 whitespace-pre-wrap leading-relaxed">
-                  {note.content}
-                </p>
+              <div className="prose prose-sm max-w-none dark:prose-invert">
+                <div 
+                  className="text-gray-900 dark:text-gray-100 leading-relaxed"
+                  dangerouslySetInnerHTML={{ 
+                    __html: convertMarkdownToHtml(note.content) 
+                  }}
+                />
               </div>
             )}
 

@@ -8,6 +8,21 @@ import {
 } from 'lucide-react'
 import { Note, NoteAttachment } from '../../lib/supabase'
 
+const convertMarkdownToHtml = (markdown: string) => {
+  return markdown
+    .replace(/^### (.*$)/gim, '<h3 class="text-base font-semibold mb-1">$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2 class="text-lg font-semibold mb-1">$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1 class="text-xl font-bold mb-2">$1</h1>')
+    .replace(/\*\*(.*?)\*\*/gim, '<strong class="font-semibold">$1</strong>')
+    .replace(/\*(.*?)\*/gim, '<em class="italic">$1</em>')
+    .replace(/__(.*?)__/gim, '<u class="underline">$1</u>')
+    .replace(/`(.*?)`/gim, '<code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-xs font-mono">$1</code>')
+    .replace(/^\> (.*$)/gim, '<blockquote class="border-l-2 border-gray-300 dark:border-gray-600 pl-2 italic text-gray-600 dark:text-gray-400">$1</blockquote>')
+    .replace(/^\* (.*$)/gim, '<li class="ml-2">• $1</li>')
+    .replace(/^\d+\. (.*$)/gim, '<li class="ml-2">$1</li>')
+    .replace(/\n/gim, '<br>')
+}
+
 interface EnhancedNoteCardProps {
   note: Note
   onDelete: (noteId: string) => void
@@ -318,13 +333,17 @@ export const EnhancedNoteCard: React.FC<EnhancedNoteCardProps> = ({
             {/* Text content */}
             {note.content && (
               <div className="space-y-2">
-                <div className={`text-gray-900 whitespace-pre-wrap break-words text-sm leading-relaxed ${
-                  note.content.trim().length < 10 ? 'p-3 bg-gray-50 border border-gray-200 rounded text-center italic' : ''
+                <div className={`text-gray-900 dark:text-gray-100 break-words text-sm leading-relaxed prose prose-sm max-w-none dark:prose-invert ${
+                  note.content.trim().length < 10 ? 'p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded text-center italic' : ''
                 }`}>
                   {note.content.trim().length < 10 ? (
                     <span>"{getPreviewContent()}"</span>
                   ) : (
-                    <span>{getPreviewContent()}</span>
+                    <div 
+                      dangerouslySetInnerHTML={{ 
+                        __html: convertMarkdownToHtml(getPreviewContent()) 
+                      }}
+                    />
                   )}
                 </div>
                 

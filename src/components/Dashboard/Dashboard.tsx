@@ -1,15 +1,22 @@
 import React, { useState } from 'react'
 import { Header } from './Header'
 import { NoteForm } from './NoteForm'
-import { NotesList } from './NotesList'
+import { EnhancedNotesList } from './EnhancedNotesList'
 import { EditNoteModal } from './EditNoteModal'
+import { SettingsModal } from './SettingsModal'
+import { LayoutSelector } from './LayoutSelector'
 import { useNotes } from '../../hooks/useNotes'
+import { useLayoutPreferences } from '../../hooks/useLayoutPreferences'
 import { Note } from '../../lib/supabase'
+import { Settings, Plus } from 'lucide-react'
+import { Button } from '../ui/Button'
 
 export const Dashboard: React.FC = () => {
   const { notes, loading, createNote, createMultimediaNote, deleteNote, toggleFavorite, updateNote } = useNotes()
+  const { layout } = useLayoutPreferences()
   const [editingNote, setEditingNote] = useState<Note | null>(null)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
 
   const handleEditNote = (note: Note) => {
     setEditingNote(note)
@@ -25,6 +32,14 @@ export const Dashboard: React.FC = () => {
   const handleCloseEdit = () => {
     setShowEditModal(false)
     setEditingNote(null)
+  }
+
+  const handleImportNotes = async (importedNotes: Note[]) => {
+    for (const note of importedNotes) {
+      // Remove the id to create new notes
+      const { id, ...noteData } = note
+      await createNote(noteData.content || '')
+    }
   }
 
   return (
@@ -58,15 +73,27 @@ export const Dashboard: React.FC = () => {
           <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-sm">
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center space-x-2">
                   <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
                   <span>Recent Notes</span>
                 </h3>
-                <div className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-medium">
-                  {notes.length} {notes.length === 1 ? 'note' : 'notes'}
+                <div className="flex items-center space-x-3">
+                  <LayoutSelector />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowSettings(true)}
+                    className="h-8 px-3"
+                  >
+                    <Settings className="h-4 w-4 mr-1" />
+                    Settings
+                  </Button>
+                  <div className="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-3 py-1 rounded-full text-sm font-medium">
+                    {notes.length} {notes.length === 1 ? 'note' : 'notes'}
+                  </div>
                 </div>
               </div>
-              <NotesList
+              <EnhancedNotesList
                 notes={notes}
                 loading={loading}
                 onDelete={deleteNote}
@@ -84,6 +111,14 @@ export const Dashboard: React.FC = () => {
         isOpen={showEditModal}
         onClose={handleCloseEdit}
         onSave={handleSaveEdit}
+      />
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        notes={notes}
+        onImport={handleImportNotes}
       />
     </div>
   )
