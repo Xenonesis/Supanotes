@@ -4,7 +4,7 @@ import { Button } from '../ui/Button'
 import { 
   Trash2, Clock, Image, Mic, FileText, Download, Star, 
   Eye, EyeOff, Edit, Hash, Paperclip, ChevronDown, ChevronUp,
-  Play, Pause, Volume2
+  Play, Pause, Volume2, ExternalLink
 } from 'lucide-react'
 import { Note, NoteAttachment } from '../../lib/supabase'
 
@@ -74,7 +74,12 @@ export const EnhancedNoteCard: React.FC<EnhancedNoteCardProps> = ({
     }
   }
 
-  const toggleAudioPlayback = (audioUrl: string, audioId: string) => {
+  const openPreviewInNewPage = () => {
+    const previewUrl = `/preview?id=${note.id}`
+    window.open(previewUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes')
+  }
+
+  const toggleAudioPlayback = (_audioUrl: string, audioId: string) => {
     const audio = document.getElementById(audioId) as HTMLAudioElement
     if (!audio) return
 
@@ -262,8 +267,19 @@ export const EnhancedNoteCard: React.FC<EnhancedNoteCardProps> = ({
                 variant="outline"
                 size="sm"
                 className="opacity-70 hover:opacity-100 transition-opacity p-1 h-7 w-7"
+                title="Toggle inline preview"
               >
                 {showFullPreview ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+              </Button>
+              
+              <Button
+                onClick={openPreviewInNewPage}
+                variant="outline"
+                size="sm"
+                className="opacity-70 hover:opacity-100 transition-opacity p-1 h-7 w-7"
+                title="Open in new page"
+              >
+                <ExternalLink className="h-3 w-3" />
               </Button>
               
               {onEdit && (
@@ -302,9 +318,15 @@ export const EnhancedNoteCard: React.FC<EnhancedNoteCardProps> = ({
             {/* Text content */}
             {note.content && (
               <div className="space-y-2">
-                <p className="text-gray-900 whitespace-pre-wrap break-words text-sm leading-relaxed">
-                  {getPreviewContent()}
-                </p>
+                <div className={`text-gray-900 whitespace-pre-wrap break-words text-sm leading-relaxed ${
+                  note.content.trim().length < 10 ? 'p-3 bg-gray-50 border border-gray-200 rounded text-center italic' : ''
+                }`}>
+                  {note.content.trim().length < 10 ? (
+                    <span>"{getPreviewContent()}"</span>
+                  ) : (
+                    <span>{getPreviewContent()}</span>
+                  )}
+                </div>
                 
                 {shouldShowExpandButton() && (
                   <Button

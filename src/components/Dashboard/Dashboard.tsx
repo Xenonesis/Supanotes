@@ -1,11 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Header } from './Header'
 import { NoteForm } from './NoteForm'
 import { NotesList } from './NotesList'
+import { EditNoteModal } from './EditNoteModal'
 import { useNotes } from '../../hooks/useNotes'
+import { Note } from '../../lib/supabase'
 
 export const Dashboard: React.FC = () => {
-  const { notes, loading, createNote, createMultimediaNote, deleteNote } = useNotes()
+  const { notes, loading, createNote, createMultimediaNote, deleteNote, toggleFavorite, updateNote } = useNotes()
+  const [editingNote, setEditingNote] = useState<Note | null>(null)
+  const [showEditModal, setShowEditModal] = useState(false)
+
+  const handleEditNote = (note: Note) => {
+    setEditingNote(note)
+    setShowEditModal(true)
+  }
+
+  const handleSaveEdit = async (noteId: string, updates: Partial<Note>) => {
+    await updateNote(noteId, updates)
+    setShowEditModal(false)
+    setEditingNote(null)
+  }
+
+  const handleCloseEdit = () => {
+    setShowEditModal(false)
+    setEditingNote(null)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -50,11 +70,21 @@ export const Dashboard: React.FC = () => {
                 notes={notes}
                 loading={loading}
                 onDelete={deleteNote}
+                onToggleFavorite={toggleFavorite}
+                onEdit={handleEditNote}
               />
             </div>
           </div>
         </div>
       </main>
+
+      {/* Edit Modal */}
+      <EditNoteModal
+        note={editingNote}
+        isOpen={showEditModal}
+        onClose={handleCloseEdit}
+        onSave={handleSaveEdit}
+      />
     </div>
   )
 }

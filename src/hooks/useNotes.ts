@@ -161,12 +161,71 @@ export const useNotes = () => {
     }
   }
 
+  const toggleFavorite = async (noteId: string) => {
+    if (!supabaseReady) {
+      toast.error('Please connect your Supabase project first')
+      return
+    }
+
+    try {
+      const noteToUpdate = notes.find(note => note.id === noteId)
+      if (!noteToUpdate) return
+
+      const { error } = await supabase
+        .from('notes')
+        .update({ is_favorite: !noteToUpdate.is_favorite })
+        .eq('id', noteId)
+
+      if (error) throw error
+
+      setNotes(prev => prev.map(note => 
+        note.id === noteId 
+          ? { ...note, is_favorite: !note.is_favorite }
+          : note
+      ))
+      
+      toast.success(noteToUpdate.is_favorite ? 'Removed from favorites' : 'Added to favorites')
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to update favorite status')
+      throw error
+    }
+  }
+
+  const updateNote = async (noteId: string, updates: Partial<Note>) => {
+    if (!supabaseReady) {
+      toast.error('Please connect your Supabase project first')
+      return
+    }
+
+    try {
+      const { error } = await supabase
+        .from('notes')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', noteId)
+
+      if (error) throw error
+
+      setNotes(prev => prev.map(note => 
+        note.id === noteId 
+          ? { ...note, ...updates, updated_at: new Date().toISOString() }
+          : note
+      ))
+      
+      toast.success('Note updated successfully!')
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to update note')
+      throw error
+    }
+  }
+
   return {
     notes,
     loading,
     createNote,
     createMultimediaNote,
     deleteNote,
+    toggleFavorite,
+    updateNote,
     refetch: fetchNotes,
   }
 }

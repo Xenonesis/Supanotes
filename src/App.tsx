@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'
 import { AuthPage } from './components/Auth/AuthPage'
 import { EnhancedBasicDashboard } from './components/Dashboard/EnhancedBasicDashboard'
+import { NotePreviewPage } from './components/Dashboard/NotePreviewPage'
 import { LoadingSpinner } from './components/LoadingSpinner'
 
 import { OAuthHandler } from './components/OAuthHandler'
@@ -36,6 +37,7 @@ const AppContent: React.FC = () => {
   return (
     <div className="min-h-screen gradient-bg">
       <Routes>
+        <Route path="/preview" element={user ? <NotePreviewPage /> : <AuthPage />} />
         <Route path="/auth/*" element={!user ? <AuthPage /> : <EnhancedBasicDashboard />} />
         <Route path="/*" element={user ? <EnhancedBasicDashboard /> : <AuthPage />} />
       </Routes>

@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import { Card, CardContent } from '../ui/Card'
-import { Plus, PenTool, Image, Mic, FileText, X } from 'lucide-react'
+import { Plus, PenTool, Image, Mic, FileText, X, Eye } from 'lucide-react'
 import { NoteContentType } from '../../lib/supabase'
 
 interface NoteFormProps {
@@ -16,6 +16,7 @@ export const NoteForm: React.FC<NoteFormProps> = ({ onSubmit, onMultimediaSubmit
   const [selectedContentType, setSelectedContentType] = useState<NoteContentType>('text')
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [showPreview, setShowPreview] = useState(false)
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const audioInputRef = useRef<HTMLInputElement>(null)
@@ -202,17 +203,150 @@ export const NoteForm: React.FC<NoteFormProps> = ({ onSubmit, onMultimediaSubmit
             </div>
           )}
 
-          {/* Submit button */}
-          <Button
-            type="submit"
-            loading={loading}
-            disabled={!isFormValid()}
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            {getSubmitButtonText()}
-          </Button>
+          {/* Action buttons */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            {isFormValid() && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowPreview(true)}
+                disabled={loading}
+                className="w-full sm:w-auto"
+              >
+                <Eye className="h-4 w-4 mr-2" />
+                Preview
+              </Button>
+            )}
+            
+            <Button
+              type="submit"
+              loading={loading}
+              disabled={!isFormValid()}
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              {getSubmitButtonText()}
+            </Button>
+          </div>
         </form>
+
+        {/* Preview Modal */}
+        {showPreview && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+              onClick={() => setShowPreview(false)}
+            />
+            
+            {/* Modal */}
+            <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
+                <div className="flex items-center space-x-3">
+                  {selectedContentType === 'image' && <Image className="h-5 w-5 text-blue-500" />}
+                  {selectedContentType === 'audio' && <Mic className="h-5 w-5 text-green-500" />}
+                  {selectedContentType === 'text' && <FileText className="h-5 w-5 text-gray-500" />}
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Note Preview
+                  </h2>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <Button
+                    onClick={async () => {
+                      setShowPreview(false)
+                      await handleSubmit(new Event('submit') as any)
+                    }}
+                    disabled={loading}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    {getSubmitButtonText()}
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowPreview(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6 space-y-4 overflow-y-auto" style={{ maxHeight: 'calc(90vh - 140px)' }}>
+                {/* Text Content */}
+                {content && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium text-gray-700">Content</h4>
+                    <div className="prose max-w-none">
+                      <p className="text-gray-900 whitespace-pre-wrap leading-relaxed bg-gray-50 p-4 rounded-lg border">
+                        {content}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* File Preview */}
+                {selectedFile && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium text-gray-700">Attachment</h4>
+                    <div className="border rounded-lg p-4 bg-gray-50">
+                      {selectedContentType === 'image' && previewUrl && (
+                        <div className="flex justify-center">
+                          <img
+                            src={previewUrl}
+                            alt="Preview"
+                            className="max-w-full max-h-64 rounded border border-gray-200"
+                          />
+                        </div>
+                      )}
+                      
+                      {selectedContentType === 'audio' && (
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-3">
+                            <Mic className="h-5 w-5 text-gray-500" />
+                            <span className="text-sm text-gray-700 font-medium">
+                              {selectedFile.name}
+                            </span>
+                          </div>
+                          <audio controls className="w-full">
+                            <source src={URL.createObjectURL(selectedFile)} />
+                            Your browser does not support the audio element.
+                          </audio>
+                        </div>
+                      )}
+
+                      <div className="mt-3 pt-3 border-t border-gray-200">
+                        <div className="text-sm text-gray-600">
+                          <span>Size: {(selectedFile.size / 1024).toFixed(1)} KB</span>
+                          <span className="mx-2">•</span>
+                          <span>Type: {selectedFile.type}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!content && !selectedFile && (
+                  <div className="text-center py-8 text-gray-500">
+                    <FileText className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <p>No content to preview</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className="border-t border-gray-200 bg-gray-50 px-6 py-3">
+                <div className="flex items-center justify-between text-sm text-gray-600">
+                  <span>This is how your note will appear</span>
+                  <span className="capitalize">{selectedContentType} Note</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   )

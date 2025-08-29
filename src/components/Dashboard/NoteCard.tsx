@@ -1,18 +1,24 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Card, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
-import { Trash2, Clock, Image, Mic, FileText, Download, Eye, MoreVertical } from 'lucide-react'
+import { Trash2, Clock, Image, Mic, FileText, Download, Eye, Star } from 'lucide-react'
 import { Note } from '../../lib/supabase'
 import { formatDate, formatFileSize } from '../../lib/utils'
 
 interface NoteCardProps {
   note: Note
   onDelete: (noteId: string) => void
+  onToggleFavorite?: (noteId: string) => void
+  onEdit?: (note: Note) => void
 }
 
-export const NoteCard: React.FC<NoteCardProps> = ({ note, onDelete }) => {
-  const [showActions, setShowActions] = useState(false)
-  const [isExpanded, setIsExpanded] = useState(false)
+export const NoteCard: React.FC<NoteCardProps> = ({ note, onDelete, onToggleFavorite, onEdit: _onEdit }) => {
+  // onEdit is unused but kept for interface compatibility
+  void _onEdit
+  const openPreviewInNewPage = () => {
+    const previewUrl = `/preview?id=${note.id}`
+    window.open(previewUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes')
+  }
 
   const getContentTypeIcon = () => {
     switch (note.content_type) {
@@ -44,14 +50,35 @@ export const NoteCard: React.FC<NoteCardProps> = ({ note, onDelete }) => {
               </span>
             </div>
             <div className="flex items-center space-x-1">
+              <Button
+                onClick={openPreviewInNewPage}
+                variant="outline"
+                size="sm"
+                className="opacity-70 hover:opacity-100 transition-opacity p-1 h-7 w-7"
+                title="Preview & Edit"
+              >
+                <Eye className="h-3 w-3" />
+              </Button>
               {note.file_url && (
                 <Button
                   onClick={handleDownload}
                   variant="outline"
                   size="sm"
                   className="opacity-70 hover:opacity-100 transition-opacity p-1 h-7 w-7"
+                  title="Download"
                 >
                   <Download className="h-3 w-3" />
+                </Button>
+              )}
+              {onToggleFavorite && (
+                <Button
+                  onClick={() => onToggleFavorite(note.id)}
+                  variant="outline"
+                  size="sm"
+                  className="opacity-70 hover:opacity-100 transition-opacity p-1 h-7 w-7"
+                  title={note.is_favorite ? "Remove from favorites" : "Add to favorites"}
+                >
+                  <Star className={`h-3 w-3 ${note.is_favorite ? 'fill-current text-yellow-500' : ''}`} />
                 </Button>
               )}
               <Button
@@ -59,6 +86,7 @@ export const NoteCard: React.FC<NoteCardProps> = ({ note, onDelete }) => {
                 variant="danger"
                 size="sm"
                 className="opacity-70 hover:opacity-100 transition-opacity p-1 h-7 w-7"
+                title="Delete"
               >
                 <Trash2 className="h-3 w-3" />
               </Button>
@@ -91,9 +119,15 @@ export const NoteCard: React.FC<NoteCardProps> = ({ note, onDelete }) => {
 
             {/* Text content */}
             {note.content && (
-              <p className="text-gray-900 whitespace-pre-wrap break-words text-sm leading-relaxed">
-                {note.content}
-              </p>
+              <div className={`text-gray-900 whitespace-pre-wrap break-words text-sm leading-relaxed ${
+                note.content.trim().length < 10 ? 'p-3 bg-gray-50 border border-gray-200 rounded text-center italic' : ''
+              }`}>
+                {note.content.trim().length < 10 ? (
+                  <span>"{note.content}"</span>
+                ) : (
+                  note.content
+                )}
+              </div>
             )}
           </div>
 

@@ -6,9 +6,11 @@ interface NotesListProps {
   notes: Note[]
   loading: boolean
   onDelete: (noteId: string) => void
+  onToggleFavorite?: (noteId: string) => void
+  onEdit?: (note: Note) => void
 }
 
-export const NotesList: React.FC<NotesListProps> = ({ notes, loading, onDelete }) => {
+export const NotesList: React.FC<NotesListProps> = ({ notes, loading, onDelete, onToggleFavorite, onEdit }) => {
   if (loading) {
     return (
       <div className="space-y-4">
@@ -48,6 +50,8 @@ export const NotesList: React.FC<NotesListProps> = ({ notes, loading, onDelete }
           key={note.id}
           note={note}
           onDelete={onDelete}
+          onToggleFavorite={onToggleFavorite}
+          onEdit={onEdit}
         />
       ))}
     </div>
