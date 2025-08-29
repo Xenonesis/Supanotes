@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'
+import { LandingPage } from './components/LandingPage'
+import { DemoPreview } from './components/DemoPreview'
 import { AuthPage } from './components/Auth/AuthPage'
 import { EnhancedBasicDashboard } from './components/Dashboard/EnhancedBasicDashboard'
 import { NotePreviewPage } from './components/Dashboard/NotePreviewPage'
@@ -37,9 +39,11 @@ const AppContent: React.FC = () => {
   return (
     <div className="min-h-screen gradient-bg">
       <Routes>
-        <Route path="/preview" element={user ? <NotePreviewPage /> : <AuthPage />} />
+        <Route path="/demo" element={<DemoPreview />} />
+        <Route path="/preview" element={user ? <NotePreviewPage /> : <LandingPage />} />
         <Route path="/auth/*" element={!user ? <AuthPage /> : <EnhancedBasicDashboard />} />
-        <Route path="/*" element={user ? <EnhancedBasicDashboard /> : <AuthPage />} />
+        <Route path="/dashboard" element={user ? <EnhancedBasicDashboard /> : <LandingPage />} />
+        <Route path="/*" element={user ? <EnhancedBasicDashboard /> : <LandingPage />} />
       </Routes>
       
       <Toaster

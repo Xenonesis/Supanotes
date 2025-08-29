@@ -49,20 +49,20 @@ export const SignUpForm: React.FC = () => {
   }
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-xl">
+    <Card className="glass shadow-xl">
       <CardHeader className="text-center pb-4">
-        <CardTitle className="flex items-center justify-center space-x-2 text-gray-900">
-          <UserPlus className="h-5 w-5 text-blue-600" />
+        <CardTitle className="flex items-center justify-center space-x-2 text-gray-900 dark:text-gray-100">
+          <UserPlus className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           <span>Create Account</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 rounded-lg p-4">
           <div className="flex items-start space-x-2">
-            <Zap className="h-4 w-4 text-blue-600 mt-0.5" />
+            <Zap className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5" />
             <div>
-              <p className="text-sm text-blue-800 font-medium">Magic Link Authentication</p>
-              <p className="text-xs text-blue-700 mt-1">
+              <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">Magic Link Authentication</p>
+              <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
                 Enter your email and we'll send you a secure link to create your account instantly!
               </p>
             </div>
@@ -78,11 +78,11 @@ export const SignUpForm: React.FC = () => {
             error={emailError}
             placeholder="Enter your email to get started"
             disabled={loading}
-            className="bg-white/60"
+            className="bg-white/60 dark:bg-gray-800/60"
           />
           <Button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 shadow-lg"
+            className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 shadow-lg"
             loading={loading}
           >
             <Mail className="w-4 h-4 mr-2" />
@@ -92,17 +92,17 @@ export const SignUpForm: React.FC = () => {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300" />
+            <div className="w-full border-t border-gray-300 dark:border-gray-600" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-3 bg-white text-gray-500 rounded-full">Or sign up with</span>
+            <span className="px-3 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-full">Or sign up with</span>
           </div>
         </div>
 
         <Button
           onClick={handleGoogleSignUp}
           variant="outline"
-          className="w-full bg-white/60 border-gray-300 hover:bg-gray-50"
+          className="w-full bg-white/60 dark:bg-gray-800/60 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
         >
           <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
             <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -113,27 +113,27 @@ export const SignUpForm: React.FC = () => {
           Continue with Google
         </Button>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-          <h4 className="text-sm font-medium text-gray-900 mb-3 flex items-center space-x-2">
-            <Shield className="h-4 w-4 text-gray-600" />
+        <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-lg p-4">
+          <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3 flex items-center space-x-2">
+            <Shield className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             <span>What happens next?</span>
           </h4>
           <div className="space-y-2">
             <div className="flex items-start space-x-2">
-              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2"></div>
-              <p className="text-xs text-gray-600">Secure link sent to your email</p>
+              <div className="w-1.5 h-1.5 bg-blue-500 dark:bg-blue-400 rounded-full mt-2"></div>
+              <p className="text-xs text-gray-600 dark:text-gray-300">Secure link sent to your email</p>
             </div>
             <div className="flex items-start space-x-2">
-              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2"></div>
-              <p className="text-xs text-gray-600">Click to verify and create account</p>
+              <div className="w-1.5 h-1.5 bg-blue-500 dark:bg-blue-400 rounded-full mt-2"></div>
+              <p className="text-xs text-gray-600 dark:text-gray-300">Click to verify and create account</p>
             </div>
             <div className="flex items-start space-x-2">
-              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2"></div>
-              <p className="text-xs text-gray-600">Start taking notes instantly</p>
+              <div className="w-1.5 h-1.5 bg-blue-500 dark:bg-blue-400 rounded-full mt-2"></div>
+              <p className="text-xs text-gray-600 dark:text-gray-300">Start taking notes instantly</p>
             </div>
             <div className="flex items-start space-x-2">
-              <Lock className="h-3 w-3 text-gray-500 mt-1.5" />
-              <p className="text-xs text-gray-500">End-to-end encrypted & private</p>
+              <Lock className="h-3 w-3 text-gray-500 dark:text-gray-400 mt-1.5" />
+              <p className="text-xs text-gray-500 dark:text-gray-400">End-to-end encrypted & private</p>
             </div>
           </div>
         </div>
